@@ -62,6 +62,10 @@ rating_html = r'''
 html = r'''<!DOCTYPE html>
 <html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#e8e2d6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Appartement de Ugo et Elsa · Visite 360°</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -71,8 +75,8 @@ html = r'''<!DOCTYPE html>
   --ink:#1f1f1f;--ink2:#444746;--muted:#5f6368;--blue:#0b57d0;--teal:#0e6b75;--chip-sh:0 1px 3px rgba(60,64,67,.3),0 4px 8px 3px rgba(60,64,67,.15);
   --sh:0 1px 2px rgba(60,64,67,.3),0 2px 6px 2px rgba(60,64,67,.15)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;height:100%;background:#202124;font-family:var(--font);color:var(--ink);overflow:hidden;-webkit-font-smoothing:antialiased}
-#pano{position:fixed;inset:0}
+html,body{margin:0;height:100%;background:#e8e2d6;font-family:var(--font);color:var(--ink);overflow:hidden;-webkit-font-smoothing:antialiased}
+#pano{position:absolute;top:0;left:0;width:100%;height:100vh;height:100lvh}
 .pnlm-panorama-info,.pnlm-about-msg{display:none!important}
 .pnlm-load-box{display:none!important;background:#fff!important;color:var(--ink)!important;border-radius:16px;box-shadow:var(--sh);font-family:var(--font)!important}
 .pnlm-load-box p{display:none}.pnlm-lbar{border-color:#dadce0!important}.pnlm-lbar-fill{background:var(--blue)!important}
