@@ -14,7 +14,7 @@ icons = {  # material-style outline icons (24px)
  'balcon': '<path d="M12 3a4 4 0 0 1 4 4M12 3v2"/><circle cx="12" cy="9" r="0"/><path d="M3 21h18M5 21v-7M19 21v-7M3 14h18M9 14v7M14 14v7"/><circle cx="12" cy="7" r="2.5"/>',
 }
 order = ['sejour', 'repas', 'entree', 'chambre', 'sde', 'wc', 'balcon']
-links = [('sejour', 'repas', None), ('sejour', 'balcon', (198, 205)), ('repas', 'entree', None),
+links = [('sejour', 'repas', None), ('sejour', 'balcon', (198, 205)), ('repas', 'entree', None), ('entree', 'sejour', None),
          ('entree', 'chambre', (512, 436)), ('entree', 'sde', (743, 486)), ('entree', 'wc', (880, 486))]
 EYE = 155
 def hs(a, b, via):
@@ -25,12 +25,14 @@ def hs(a, b, via):
     return {'pitch': round(pitch, 1), 'yaw': round(yaw, 1), 'type': 'info',
             'cssClass': 'hs', 'createTooltipFunc': '@@HS@@', 'createTooltipArgs': b,
             'clickHandlerFunc': '@@WALK@@', 'clickHandlerArgs': {'k': b, 'yaw': round(yaw, 1), 'pitch': round(pitch, 1)}}
-start_yaw = {'sejour': 0, 'repas': -70, 'entree': -90, 'chambre': -135, 'sde': 180, 'wc': 180, 'balcon': 90}
-scenes = {k: {'title': pts[k][2], 'type': 'equirectangular', 'panorama': f'pano/{k}.jpg', 'yaw': start_yaw[k],
+start_yaw = {'sejour': -30, 'repas': 28, 'entree': -78, 'chambre': -115, 'sde': -115, 'wc': 180, 'balcon': -90}
+scenes = {k: {'title': pts[k][2], 'type': 'equirectangular', 'panorama': f'{k}.jpg', 'yaw': start_yaw[k],
               'pitch': -4, 'hfov': 100, 'hotSpots': []} for k in order}
 for a, b, via in links:
     scenes[a]['hotSpots'].append(hs(a, b, via)); scenes[b]['hotSpots'].append(hs(b, a, via))
-cfg = json.dumps({'default': {'firstScene': 'sejour', 'sceneFadeDuration': 900, 'autoLoad': True, 'showControls': False,
+scenes['sejour']['hotSpots'].append(dict(hs('sejour', 'sde', (743, 486)), pitch=1))
+scenes['sejour']['hotSpots'].append(hs('sejour', 'chambre', (512, 436)))
+cfg = json.dumps({'default': {'firstScene': 'entree', 'sceneFadeDuration': 900, 'autoLoad': True, 'showControls': False,
                               'hfov': 100, 'minHfov': 45, 'maxHfov': 120, 'friction': 0.12}, 'scenes': scenes}, ensure_ascii=False)
 cfg = cfg.replace('"@@HS@@"', 'makeHotspot').replace('"@@WALK@@"', 'walkTo')
 names = json.dumps({k: pts[k][2] for k in order}, ensure_ascii=False)
@@ -104,20 +106,33 @@ button{font-family:var(--font)}
 
 .compass{position:fixed;right:12px;bottom:calc(var(--planh) + 26px + env(safe-area-inset-bottom));z-index:9;width:56px;height:56px;border-radius:50%;border:0;padding:3px;background:#fff;box-shadow:var(--chip-sh);cursor:pointer}
 .compass svg{width:100%;height:100%;display:block;transition:transform .06s linear}
+.compass:active{transform:scale(.94)}
 :root{--planh:130px}
 /* mini plan card (top view) */
 .plan{position:fixed;right:12px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:9;background:#fff;border-radius:16px;box-shadow:var(--chip-sh);
-  padding:6px;width:min(360px,calc(100vw - 24px));overflow:hidden}
-.plan svg{display:block;width:100%;height:auto;border-radius:11px}
+  display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px;width:min(360px,calc(100vw - 24px))}
+.pframe{order:1;flex:0 0 100%;box-sizing:border-box;padding:8px;background:#f1f3f4;border-radius:10px}
+.plan .pline{fill:none;stroke:#bdc1c6;stroke-width:3;stroke-linejoin:round;pointer-events:none}
+.plan svg{display:block;width:100%;height:auto}
 .plan .zone{fill:transparent;cursor:pointer}
 .plan .zone:hover{fill:rgba(26,115,232,.10)}
 .plan .halo{fill:url(#coneg);pointer-events:none}
 .plan .me{fill:#1a73e8;stroke:#fff;stroke-width:7;pointer-events:none}
 .plan .me-ring{fill:rgba(26,115,232,.2);pointer-events:none}
-.pinfo{position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:50%;border:0;background:#fff;box-shadow:var(--sh);display:flex;align-items:center;justify-content:center;cursor:pointer}
-.pinfo svg{width:20px;height:20px;fill:none;stroke:#0b57d0;stroke-width:2;stroke-linecap:round}
-.plabel{position:absolute;left:12px;top:12px;height:30px;padding:0 12px;border-radius:15px;background:#fff;box-shadow:var(--sh);display:flex;align-items:center;font-size:14px;font-weight:500;color:var(--ink)}
-@media (max-width:600px){.plan{width:min(190px,calc(100vw - 24px));padding:4px}.compass{width:44px;height:44px}.plabel{font-size:12px;height:26px;top:10px;left:10px}.pinfo{width:30px;height:30px;top:10px;right:10px}}
+.pinfo,.pmap{position:relative;flex:none;width:32px;height:32px;padding:0;border-radius:50%;border:0;background:#f1f3f4;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.pinfo svg,.pmap svg{width:16px;height:16px;fill:none;stroke:#0b57d0;stroke-width:2.6;stroke-linecap:round}
+.pinfo::after,.pmap::after{content:"";position:absolute;inset:-6px -3px}
+.pmap .ic-map{display:none;stroke-width:2;stroke-linejoin:round}
+.pinfo:hover,.pmap:hover{background:#e8eaed}
+.pinfo:active,.pmap:active{transform:scale(.94)}
+.plabel{order:-1;margin-right:auto;height:32px;padding:0 6px;display:flex;align-items:center;font-size:14px;font-weight:500;color:var(--ink)}
+@media (max-width:600px){.plan{width:min(260px,calc(100vw - 24px))}.pframe{padding:6px}.compass{width:48px;height:48px;padding:2px}}
+.plan.closed{display:flex;align-items:center;gap:8px;width:auto;padding:0;background:none;box-shadow:none;overflow:visible}
+.plan.closed .pframe{display:none}
+.plan.closed .plabel{margin:0;height:40px;padding:0 16px;border-radius:20px;background:#fff;box-shadow:var(--chip-sh)}
+.plan.closed .pinfo,.plan.closed .pmap{width:40px;height:40px;background:#fff;box-shadow:var(--chip-sh)}
+.plan.closed .pmap .ic-hide{display:none}
+.plan.closed .pmap .ic-map{display:block}
 /* info chip + panel */
 .chip.info{color:#0b57d0}
 .chip.info svg{stroke:#0b57d0}
@@ -158,12 +173,14 @@ button{font-family:var(--font)}
 /* hotspots : compact white dots with small label */
 .hs{width:0;height:0}
 .hs .wrap{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer}
-.hs .wrap .ic{width:34px;height:34px;border-radius:50%;background:#fff;box-shadow:var(--chip-sh);display:flex;align-items:center;justify-content:center}
+.hs .wrap .ic{width:34px;height:34px;border-radius:50%;background:#fff;box-shadow:var(--chip-sh);display:flex;align-items:center;justify-content:center;transition:transform .15s ease-out}
 .hs .wrap .ic svg{width:18px;height:18px}
+@media (hover:hover){.hs .wrap:hover .ic{transform:scale(1.18)}}
 .hs .wrap .lb{font:500 12px var(--font);color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.7);white-space:nowrap}
 .hs .wrap:active .ic{background:#e8f0fe}
-.toast{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:13;background:#303134;color:#e8eaed;border-radius:8px;padding:12px 16px;font-size:14px;
-  box-shadow:var(--sh);transition:opacity .6s;pointer-events:none;max-width:86vw;text-align:center}
+.toast{position:fixed;left:50%;top:calc(16px + env(safe-area-inset-top));transform:translateX(-50%);z-index:13;display:flex;align-items:center;gap:8px;height:40px;padding:0 16px 0 12px;background:#fff;color:var(--ink);border-radius:20px;font-size:14px;font-weight:500;white-space:nowrap;
+  box-shadow:var(--chip-sh);transition:opacity .4s;pointer-events:none}
+.toast svg{width:20px;height:20px;flex:none;fill:none;stroke:#1a73e8;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 
 </style></head>
 <body>
@@ -176,27 +193,33 @@ button{font-family:var(--font)}
 <button class="compass" id="compass" type="button" aria-label="Boussole : revenir au nord">
   <svg viewBox="0 0 100 100" id="dial">
     <circle cx="50" cy="50" r="47" fill="#fff"/>
-    <g font-family="Google Sans, Roboto, Arial" font-weight="500" font-size="15" text-anchor="middle" dominant-baseline="central">
-      <text x="50" y="14" fill="#ea4335">N</text><text x="86" y="50" fill="#5f6368">E</text>
-      <text x="50" y="86" fill="#5f6368">S</text><text x="14" y="50" fill="#5f6368">O</text></g>
-    <g stroke="#bdc1c6" stroke-width="2" stroke-linecap="round">
-      <line x1="72" y1="28" x2="75" y2="25"/><line x1="72" y1="72" x2="75" y2="75"/><line x1="28" y1="72" x2="25" y2="75"/><line x1="28" y1="28" x2="25" y2="25"/></g>
-    <path d="M50 24 L57 50 L43 50 Z" fill="#ea4335"/><path d="M50 76 L57 50 L43 50 Z" fill="#9aa0a6"/>
-    <circle cx="50" cy="50" r="3.2" fill="#fff" stroke="#9aa0a6" stroke-width="1.5"/>
+    <circle cx="50" cy="50" r="44" fill="none" stroke="#dadce0" stroke-width="3" pathLength="360" stroke-dasharray="1.1 13.9" stroke-dashoffset=".55"/>
+    <circle cx="50" cy="50" r="43.5" fill="none" stroke="#80868b" stroke-width="4" pathLength="360" stroke-dasharray="1.8 88.2" stroke-dashoffset=".9"/>
+    <path d="M50 2.5 L54 9 H46 Z" fill="#ea4335"/>
+    <g font-family="Google Sans, Roboto, Arial" font-weight="600" font-size="16" text-anchor="middle" dominant-baseline="central">
+      <text x="50" y="19" fill="#ea4335">N</text><text x="81" y="50" fill="#5f6368">E</text>
+      <text x="50" y="81" fill="#5f6368">S</text><text x="19" y="50" fill="#5f6368">O</text></g>
+    <path d="M50 28 L50 50 L44.5 50 Z" fill="#f28b82"/><path d="M50 28 L50 50 L55.5 50 Z" fill="#d93025"/>
+    <path d="M50 72 L50 50 L44.5 50 Z" fill="#dadce0"/><path d="M50 72 L50 50 L55.5 50 Z" fill="#9aa0a6"/>
+    <circle cx="50" cy="50" r="3" fill="#fff" stroke="#5f6368" stroke-width="1.4"/>
   </svg>
 </button>
 
-<div class="plan" id="plan">
-  <svg viewBox="-90 3 1040 704" id="plansvg">
-    <defs><radialGradient id="coneg" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1a73e8" stop-opacity=".55"/><stop offset="1" stop-color="#1a73e8" stop-opacity="0"/></radialGradient></defs>
+<div class="plan closed" id="plan">
+  <div class="pframe"><svg viewBox="-74 15 1007 680" id="plansvg">
+    <defs><radialGradient id="coneg" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1a73e8" stop-opacity=".55"/><stop offset="1" stop-color="#1a73e8" stop-opacity="0"/></radialGradient><clipPath id="pshape"><polygon points="-74,27 178,27 178,15 933,15 933,695 27,695 27,353 -74,353"/></clipPath></defs>
+    <g clip-path="url(#pshape)">
     <image href="plan_top.jpg" x="-90" y="3" width="1040" height="704" preserveAspectRatio="none"/>
     <g id="zones"></g>
     <path class="halo" id="cone" d=""/>
     <circle class="me-ring" id="meRing" r="34" cx="0" cy="0"/>
     <circle class="me" id="me" r="19" cx="0" cy="0"/>
-  </svg>
-  <button class="pinfo" id="infoBtn" type="button" aria-label="Informations"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></svg></button>
-  <div class="plabel" id="plabel">Séjour</div>
+    </g>
+    <polygon class="pline" points="-74,27 178,27 178,15 933,15 933,695 27,695 27,353 -74,353"/>
+  </svg></div>
+  <button class="pinfo" id="infoBtn" type="button" aria-label="Informations"><svg viewBox="0 0 24 24"><circle cx="12" cy="5.5" r="2" fill="#0b57d0" stroke="none"/><path d="M12 11v8"/></svg></button>
+  <button class="pmap" id="mapBtn" type="button" aria-label="Afficher la carte" title="Afficher la carte" aria-expanded="false"><svg class="ic-hide" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg><svg class="ic-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg></button>
+  <div class="plabel" id="plabel">Entrée</div>
 </div>
 
 <div class="scrim" id="scrim"></div>
@@ -231,7 +254,7 @@ button{font-family:var(--font)}
   </ul>
 </aside>
 
-<div class="toast" id="toast">Faites glisser pour regarder autour</div>
+<div class="toast" id="toast"><svg viewBox="0 0 24 24"><path d="M3 12h18M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>Faites glisser pour regarder autour</div>
 
 <script>''' + js + r'''</script>
 <script>
@@ -243,23 +266,24 @@ var busy = false;
 function walkTo(ev, a) {
   if (busy) return; busy = true;
   viewer.lookAt(Math.max(a.pitch * 0.4, -6), a.yaw, 58, 550, function () {
-    viewer.loadScene(a.k, -4, a.yaw, 100);
+    viewer.loadScene(a.k);
     setTimeout(function () { busy = false; }, 1000);
   });
 }
 // preload every panorama so switching rooms never shows a loading screen
-['sejour','repas','entree','chambre','sde','wc','balcon'].forEach(function (k) { var im = new Image(); im.src = 'pano/' + k + '.jpg'; });
+['sejour','repas','entree','chambre','sde','wc','balcon'].forEach(function (k) { var im = new Image(); im.src = k + '.jpg'; });
 function makeHotspot(div, k) {
   var w = document.createElement('div'); w.className = 'wrap';
   w.innerHTML = '<span class="ic">' + ARROW + '</span><span class="lb"></span>';
   w.lastChild.textContent = NAMES[k]; div.appendChild(w);
 }
 var viewer = pannellum.viewer('pano', ''' + cfg + r''');
-function go(k) { if (viewer.getScene() !== k) viewer.loadScene(k, -4, viewer.getYaw(), 100); }
+function go(k) { if (viewer.getScene() !== k) viewer.loadScene(k); }
 
 // chips
 var chips = document.getElementById('chips');
 document.getElementById('infoBtn').onclick = function (e) { e.stopPropagation(); openInfo(); };
+document.getElementById('mapBtn').onclick = function (e) { e.stopPropagation(); var closed = document.getElementById('plan').classList.toggle('closed'), t = closed ? 'Afficher la carte' : 'Masquer la carte'; this.setAttribute('aria-expanded', String(!closed)); this.setAttribute('aria-label', t); this.title = t; layout(); };
 var ZONES = ["217,21 923,21 923,277 710,277 710,349 923,349 923,481 516,481 516,392 512,392 512,383 217,383", "37,392 508,392 508,681 37,681", "516,490 826,490 826,681 516,681", "833,490 923,490 923,681 833,681", "-74,26 179,26 179,354 -74,354"];
 var zg = document.getElementById('zones'), NSV = 'http://www.w3.org/2000/svg', svgEl = document.getElementById('plansvg');
 ZONES.forEach(function (pts) {
@@ -302,10 +326,12 @@ function closeInfo() { document.getElementById('info').classList.remove('on'); d
 document.getElementById('closeInfo').onclick = closeInfo; document.getElementById('scrim').onclick = closeInfo;
 document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeInfo(); });
 var var_h0 = 0;
-var h0 = (location.hash || '').slice(1); if (NAMES[h0] && h0 !== 'sejour') go(h0);
+var h0 = (location.hash || '').slice(1); if (NAMES[h0] && h0 !== 'entree') go(h0);
 window.addEventListener('hashchange', function () { var h = location.hash.slice(1); if (NAMES[h]) go(h); });
 var toast = document.getElementById('toast');
-setTimeout(function () { toast.style.opacity = 0; }, 3500);
+function hideToast() { toast.style.opacity = 0; }
+setTimeout(hideToast, 3500);
+window.addEventListener('pointerdown', hideToast, {once: true, capture: true});
 setTimeout(layout, 50);
 ''' + (r'''
 // ---------- rating (shared, one vote per signed-in person) ----------

@@ -49,27 +49,28 @@ button{font-family:var(--font)}
 .compass:active{transform:scale(.94)}
 :root{--planh:130px}
 /* mini plan card (top view) */
-.plan{position:fixed;right:12px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:9;background:#fff;border-radius:16px;box-shadow:0 0 0 1px rgba(60,64,67,.1),var(--chip-sh);
-  padding:0;width:min(360px,calc(100vw - 24px));overflow:hidden}
+.plan{position:fixed;right:12px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:9;background:#fff;border-radius:16px;box-shadow:var(--chip-sh);
+  display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px;width:min(360px,calc(100vw - 24px))}
+.pframe{order:1;flex:0 0 100%;box-sizing:border-box;padding:8px;background:#f1f3f4;border-radius:10px}
+.plan .pline{fill:none;stroke:#bdc1c6;stroke-width:3;stroke-linejoin:round;pointer-events:none}
 .plan svg{display:block;width:100%;height:auto}
 .plan .zone{fill:transparent;cursor:pointer}
 .plan .zone:hover{fill:rgba(26,115,232,.10)}
 .plan .halo{fill:url(#coneg);pointer-events:none}
 .plan .me{fill:#1a73e8;stroke:#fff;stroke-width:7;pointer-events:none}
 .plan .me-ring{fill:rgba(26,115,232,.2);pointer-events:none}
-.pinfo,.pmap{position:absolute;top:10px;right:10px;width:30px;height:30px;padding:0;border-radius:50%;border:0;background:#fff;box-shadow:var(--sh);display:flex;align-items:center;justify-content:center;cursor:pointer}
-.pinfo{right:48px}
+.pinfo,.pmap{position:relative;flex:none;width:32px;height:32px;padding:0;border-radius:50%;border:0;background:#f1f3f4;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .pinfo svg,.pmap svg{width:16px;height:16px;fill:none;stroke:#0b57d0;stroke-width:2.6;stroke-linecap:round}
-.pinfo::after,.pmap::after{content:"";position:absolute;inset:-7px -3px}
+.pinfo::after,.pmap::after{content:"";position:absolute;inset:-6px -3px}
 .pmap .ic-map{display:none;stroke-width:2;stroke-linejoin:round}
-.pinfo:hover,.pmap:hover{background:#f1f3f4}
+.pinfo:hover,.pmap:hover{background:#e8eaed}
 .pinfo:active,.pmap:active{transform:scale(.94)}
-.plabel{position:absolute;left:10px;top:10px;height:30px;padding:0 12px;border-radius:15px;background:#fff;box-shadow:var(--sh);display:flex;align-items:center;font-size:14px;font-weight:500;color:var(--ink)}
-@media (max-width:600px){.plan{width:min(190px,calc(100vw - 24px))}.compass{width:48px;height:48px;padding:2px}.plabel{font-size:12px;height:30px;top:8px;left:8px;padding:0 10px}.pinfo,.pmap{width:30px;height:30px;top:8px;right:8px}.pinfo{right:44px}.pinfo svg,.pmap svg{width:15px;height:15px}.pinfo::after,.pmap::after{inset:-7px -3px}}
+.plabel{order:-1;margin-right:auto;height:32px;padding:0 6px;display:flex;align-items:center;font-size:14px;font-weight:500;color:var(--ink)}
+@media (max-width:600px){.plan{width:min(260px,calc(100vw - 24px))}.pframe{padding:6px}.compass{width:48px;height:48px;padding:2px}}
 .plan.closed{display:flex;align-items:center;gap:8px;width:auto;padding:0;background:none;box-shadow:none;overflow:visible}
-.plan.closed #plansvg{display:none}
-.plan.closed .plabel{order:-1;position:static;height:40px;padding:0 16px;border-radius:20px;font-size:14px;box-shadow:var(--chip-sh)}
-.plan.closed .pinfo,.plan.closed .pmap{position:relative;top:auto;right:auto;width:40px;height:40px;box-shadow:var(--chip-sh)}
+.plan.closed .pframe{display:none}
+.plan.closed .plabel{margin:0;height:40px;padding:0 16px;border-radius:20px;background:#fff;box-shadow:var(--chip-sh)}
+.plan.closed .pinfo,.plan.closed .pmap{width:40px;height:40px;background:#fff;box-shadow:var(--chip-sh)}
 .plan.closed .pmap .ic-hide{display:none}
 .plan.closed .pmap .ic-map{display:block}
 /* info chip + panel */
@@ -144,18 +145,21 @@ button{font-family:var(--font)}
   </svg>
 </button>
 
-<div class="plan" id="plan">
-  <svg viewBox="-90 3 1040 704" id="plansvg">
-    <defs><radialGradient id="coneg" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1a73e8" stop-opacity=".55"/><stop offset="1" stop-color="#1a73e8" stop-opacity="0"/></radialGradient></defs>
+<div class="plan closed" id="plan">
+  <div class="pframe"><svg viewBox="-74 15 1007 680" id="plansvg">
+    <defs><radialGradient id="coneg" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1a73e8" stop-opacity=".55"/><stop offset="1" stop-color="#1a73e8" stop-opacity="0"/></radialGradient><clipPath id="pshape"><polygon points="-74,27 178,27 178,15 933,15 933,695 27,695 27,353 -74,353"/></clipPath></defs>
+    <g clip-path="url(#pshape)">
     <image href="plan_top.jpg" x="-90" y="3" width="1040" height="704" preserveAspectRatio="none"/>
     <g id="zones"></g>
     <path class="halo" id="cone" d=""/>
     <circle class="me-ring" id="meRing" r="34" cx="0" cy="0"/>
     <circle class="me" id="me" r="19" cx="0" cy="0"/>
-  </svg>
+    </g>
+    <polygon class="pline" points="-74,27 178,27 178,15 933,15 933,695 27,695 27,353 -74,353"/>
+  </svg></div>
   <button class="pinfo" id="infoBtn" type="button" aria-label="Informations"><svg viewBox="0 0 24 24"><circle cx="12" cy="5.5" r="2" fill="#0b57d0" stroke="none"/><path d="M12 11v8"/></svg></button>
-  <button class="pmap" id="mapBtn" type="button" aria-label="Masquer la carte" title="Masquer la carte" aria-expanded="true"><svg class="ic-hide" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg><svg class="ic-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg></button>
-  <div class="plabel" id="plabel">Séjour</div>
+  <button class="pmap" id="mapBtn" type="button" aria-label="Afficher la carte" title="Afficher la carte" aria-expanded="false"><svg class="ic-hide" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg><svg class="ic-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg></button>
+  <div class="plabel" id="plabel">Entrée</div>
 </div>
 
 <div class="scrim" id="scrim"></div>
@@ -323,7 +327,7 @@ function makeHotspot(div, k) {
   w.innerHTML = '<span class="ic">' + ARROW + '</span><span class="lb"></span>';
   w.lastChild.textContent = NAMES[k]; div.appendChild(w);
 }
-var viewer = pannellum.viewer('pano', {"default": {"firstScene": "sejour", "sceneFadeDuration": 900, "autoLoad": true, "showControls": false, "hfov": 100, "minHfov": 45, "maxHfov": 120, "friction": 0.12}, "scenes": {"sejour": {"title": "Séjour", "type": "equirectangular", "panorama": "sejour.jpg", "yaw": -30, "pitch": -4, "hfov": 100, "hotSpots": [{"pitch": -23.8, "yaw": 81.9, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "repas", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "repas", "yaw": 81.9, "pitch": -23.8}}, {"pitch": -16, "yaw": -86.1, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "balcon", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "balcon", "yaw": -86.1, "pitch": -16}}]}, "repas": {"title": "Cuisine", "type": "equirectangular", "panorama": "repas.jpg", "yaw": 28, "pitch": -4, "hfov": 100, "hotSpots": [{"pitch": -23.8, "yaw": -98.1, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "sejour", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "sejour", "yaw": -98.1, "pitch": -23.8}}, {"pitch": -22.5, "yaw": 145.8, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "entree", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "entree", "yaw": 145.8, "pitch": -22.5}}]}, "entree": {"title": "Entrée", "type": "equirectangular", "panorama": "entree.jpg", "yaw": -85, "pitch": -4, "hfov": 100, "hotSpots": [{"pitch": -22.5, "yaw": -34.2, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "repas", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "repas", "yaw": -34.2, "pitch": -22.5}}, {"pitch": -8, "yaw": -91.0, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "chambre", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "chambre", "yaw": -91.0, "pitch": -8}}, {"pitch": -16, "yaw": -113.8, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "sde", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "sde", "yaw": -113.8, "pitch": -16}}, {"pitch": -16, "yaw": 169.9, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "wc", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "wc", "yaw": 169.9, "pitch": -16}}]}, "chambre": {"title": "Chambre", "type": "equirectangular", "panorama": "chambre.jpg", "yaw": -115, "pitch": -4, "hfov": 100, "hotSpots": [{"pitch": -16, "yaw": 79.3, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "entree", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "entree", "yaw": 79.3, "pitch": -16}}]}, "sde": {"title": "Salle d'eau", "type": "equirectangular", "panorama": "sde.jpg", "yaw": -115, "pitch": -4, "hfov": 100, "hotSpots": [{"pitch": -16, "yaw": 17.3, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "entree", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "entree", "yaw": 17.3, "pitch": -16}}]}, "wc": {"title": "WC", "type": "equirectangular", "panorama": "wc.jpg", "yaw": 180, "pitch": -4, "hfov": 100, "hotSpots": [{"pitch": -16, "yaw": 1.5, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "entree", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "entree", "yaw": 1.5, "pitch": -16}}]}, "balcon": {"title": "Balcon", "type": "equirectangular", "panorama": "balcon.jpg", "yaw": -90, "pitch": -4, "hfov": 100, "hotSpots": [{"pitch": -16, "yaw": 96.2, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "sejour", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "sejour", "yaw": 96.2, "pitch": -16}}]}}});
+var viewer = pannellum.viewer('pano', {"default": {"firstScene": "entree", "sceneFadeDuration": 900, "autoLoad": true, "showControls": false, "hfov": 100, "minHfov": 45, "maxHfov": 120, "friction": 0.12}, "scenes": {"sejour": {"title": "Séjour", "type": "equirectangular", "panorama": "sejour.jpg", "yaw": -30, "pitch": -4, "hfov": 100, "hotSpots": [{"pitch": 1, "yaw": 129.5, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "sde", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "sde", "yaw": 129.5, "pitch": -8}}, {"pitch": -16, "yaw": 156.9, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "chambre", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "chambre", "yaw": 156.9, "pitch": -16}}, {"pitch": -14.1, "yaw": 115.0, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "entree", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "entree", "yaw": 115.0, "pitch": -14.1}}, {"pitch": -23.8, "yaw": 81.9, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "repas", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "repas", "yaw": 81.9, "pitch": -23.8}}, {"pitch": -16, "yaw": -86.1, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "balcon", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "balcon", "yaw": -86.1, "pitch": -16}}]}, "repas": {"title": "Cuisine", "type": "equirectangular", "panorama": "repas.jpg", "yaw": 28, "pitch": -4, "hfov": 100, "hotSpots": [{"pitch": -23.8, "yaw": -98.1, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "sejour", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "sejour", "yaw": -98.1, "pitch": -23.8}}, {"pitch": -22.5, "yaw": 145.8, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "entree", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "entree", "yaw": 145.8, "pitch": -22.5}}]}, "entree": {"title": "Entrée", "type": "equirectangular", "panorama": "entree.jpg", "yaw": -78, "pitch": -4, "hfov": 100, "hotSpots": [{"pitch": -14.1, "yaw": -65.0, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "sejour", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "sejour", "yaw": -65.0, "pitch": -14.1}}, {"pitch": -22.5, "yaw": -34.2, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "repas", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "repas", "yaw": -34.2, "pitch": -22.5}}, {"pitch": -8, "yaw": -91.0, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "chambre", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "chambre", "yaw": -91.0, "pitch": -8}}, {"pitch": -16, "yaw": -113.8, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "sde", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "sde", "yaw": -113.8, "pitch": -16}}, {"pitch": -16, "yaw": 169.9, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "wc", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "wc", "yaw": 169.9, "pitch": -16}}]}, "chambre": {"title": "Chambre", "type": "equirectangular", "panorama": "chambre.jpg", "yaw": -115, "pitch": -4, "hfov": 100, "hotSpots": [{"pitch": -16, "yaw": 79.3, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "entree", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "entree", "yaw": 79.3, "pitch": -16}}]}, "sde": {"title": "Salle d'eau", "type": "equirectangular", "panorama": "sde.jpg", "yaw": -115, "pitch": -4, "hfov": 100, "hotSpots": [{"pitch": -16, "yaw": 17.3, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "entree", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "entree", "yaw": 17.3, "pitch": -16}}]}, "wc": {"title": "WC", "type": "equirectangular", "panorama": "wc.jpg", "yaw": 180, "pitch": -4, "hfov": 100, "hotSpots": [{"pitch": -16, "yaw": 1.5, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "entree", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "entree", "yaw": 1.5, "pitch": -16}}]}, "balcon": {"title": "Balcon", "type": "equirectangular", "panorama": "balcon.jpg", "yaw": -90, "pitch": -4, "hfov": 100, "hotSpots": [{"pitch": -16, "yaw": 96.2, "type": "info", "cssClass": "hs", "createTooltipFunc": makeHotspot, "createTooltipArgs": "sejour", "clickHandlerFunc": walkTo, "clickHandlerArgs": {"k": "sejour", "yaw": 96.2, "pitch": -16}}]}}});
 function go(k) { if (viewer.getScene() !== k) viewer.loadScene(k); }
 
 // chips
@@ -372,7 +376,7 @@ function closeInfo() { document.getElementById('info').classList.remove('on'); d
 document.getElementById('closeInfo').onclick = closeInfo; document.getElementById('scrim').onclick = closeInfo;
 document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeInfo(); });
 var var_h0 = 0;
-var h0 = (location.hash || '').slice(1); if (NAMES[h0] && h0 !== 'sejour') go(h0);
+var h0 = (location.hash || '').slice(1); if (NAMES[h0] && h0 !== 'entree') go(h0);
 window.addEventListener('hashchange', function () { var h = location.hash.slice(1); if (NAMES[h]) go(h); });
 var toast = document.getElementById('toast');
 function hideToast() { toast.style.opacity = 0; }

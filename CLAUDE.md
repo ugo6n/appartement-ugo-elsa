@@ -29,7 +29,7 @@ Tout push sur `main` met le site à jour en 1–2 minutes.
 |---|---|
 | `index.html` | Toute la page (HTML + CSS + JS + Pannellum 2.5.7 intégré en ligne). **Généré** par `source/scripts/gen_tour_maps.py` puis chemins d'images mis à la racine. |
 | `sejour.jpg`, `repas.jpg`, `entree.jpg`, `chambre.jpg`, `sde.jpg`, `wc.jpg`, `balcon.jpg` | Vues 360° équirectangulaires. Doivent rester **à la racine** (l'upload de dossiers via le web GitHub ne marchait pas). |
-| `plan_top.jpg` | Vue du dessus utilisée par le mini-plan (viewBox SVG `-90 3 1040 704`, unités = cm du plan). |
+| `plan_top.jpg` | Vue du dessus utilisée par le mini-plan (image placée en `x=-90 y=3 1040×704`, unités = cm du plan ; viewBox `-74 15 1007 680`, découpée à la forme de l'appartement par le clipPath `pshape`). |
 | `source/Appartement-303.blend` | Scène Blender complète (Blender 5.2, textures empaquetées). |
 | `source/*.sh3d` | Fichiers Sweet Home 3D (original et amélioré). |
 | `source/scripts/` | Scripts Python Blender (`bpy`) qui ont tout produit — chemins absolus `/home/claude/...` à adapter. |
@@ -44,11 +44,15 @@ Dans Blender : X = x/100, Y = −y/100, Z = z/100 (mètres).
 ## Interface actuelle (préférences d'Ugo — à respecter)
 - DA **Google Maps** : blanc, coins arrondis, ombres douces, police Google Sans / Roboto.
 - Interface **minimale** : pas de titre, pas de barre de boutons en haut, pas de système de note (refusé).
-- Passages entre pièces : **petit rond blanc + flèche bleue + nom en petit**. Ne pas les grossir, pas d'animation qui clignote.
-- **Boussole** Google Maps (N rouge, E, S, O) qui tourne avec la vue ; clic = retour au nord.
-- **Mini-plan** en bas à droite = vraie vue du dessus avec **point bleu + cône de vue** ; clic sur une pièce pour y aller ;
-  étiquette de la pièce en haut à gauche ; bouton ⓘ ouvre la fiche infos.
+- Passages entre pièces : **petit rond blanc + flèche bleue + nom en petit**. Pas plus grands au repos (léger grossissement seulement au survol de la souris), pas d'animation qui clignote.
+- **Liens entre pièces** : l'entrée et le séjour se relient directement ; le séjour mène aussi à la chambre et à la salle d'eau.
+- **Boussole** Google Maps (N rouge, E, S, O) à cadran gradué, qui tourne avec la vue ; clic = retour au nord.
+- **Mobile d'abord** : penser et tester l'interface sur iPhone en premier.
+- **Démarrage** : la visite commence à l'entrée, carte fermée. Message d'accueil = pastille blanche en haut, qui disparaît au premier toucher.
+- **Mini-plan** en bas à droite, **fermé par défaut** (fermé : pastilles nom de la pièce + ⓘ + icône carte). Ouvert : carte blanche avec bandeau (nom, ⓘ, flèche pour masquer)
+  au-dessus de la vraie vue du dessus, découpée à la forme de l'appartement sur fond gris clair, sans bords blancs ; **point bleu + cône de vue** ; clic sur une pièce pour y aller.
 - **Transitions** : la vue tourne vers la porte + léger zoom puis fondu ; aucun écran de chargement (toutes les vues préchargées).
+- **Arrivée dans une pièce** : toujours face à son sujet, jamais devant un mur (angle fixe par pièce, champ `yaw` de chaque scène).
 - **Aucune bande noire** ni artefact sur les images : Ugo y est très attentif.
 - Pas de mention de Claude sur le site.
 
@@ -61,7 +65,8 @@ un iframe Google Maps / OpenStreetMap est maintenant faisable).
 
 ## Prochaine étape prévue
 **Améliorer l'UX/UI du site** selon les retours d'Ugo (il donnera les consignes au fur et à mesure, souvent avec des captures d'écran iPhone).
-Tester sur mobile (iPhone, viewport ~390×844) autant que sur ordinateur.
+Tester d'abord sur mobile (iPhone, viewport ~390×844), puis sur ordinateur.
+Ugo veut que les changements demandés soient publiés directement, sans lui faire déposer de fichiers.
 
 ## Refaire des images (si un meuble change)
 - `pip install bpy` (Blender 5.x en module Python) fonctionne dans l'environnement cloud.
