@@ -30,7 +30,7 @@
 .rail button svg{transition:transform .15s}
 .rail .psound .ic-on,.rail .psound[aria-pressed="true"] .ic-off{display:none}
 .rail .psound[aria-pressed="true"] .ic-on{display:block}
-.rail .psound:active svg,.rail .pmap:active svg,.rail .ptags:active svg,.rail .pshare:active svg,.rail .pinfo:active svg{transform:scale(.88)}
+.rail .psound:active svg,.rail .pmap:active svg,.rail .pinfo:active svg{transform:scale(.88)}
 .compass.north .n-state{animation:nIn .22s ease-out}
 @keyframes nIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
 .guide{animation:guideIn .24s ease-out;transition:opacity .15s,background .15s}
@@ -86,9 +86,9 @@ button{font-family:var(--font)}
 .rail.open .pburger .ic-close{display:block}
 .rail button:hover{background:rgba(255,255,255,.1)}
 .rail button:active{background:rgba(255,255,255,.2)}
-.rail .pmap[aria-expanded="true"],.rail .ptags[aria-pressed="true"],.rail .psound[aria-pressed="true"]{background:rgba(255,255,255,.22)}
+.rail .pmap[aria-expanded="true"],.rail .psound[aria-pressed="true"]{background:rgba(255,255,255,.22)}
 .rail{background:rgba(32,33,36,.84)}
-.rail .pmap svg{stroke:#8ab4f8}.rail .ptags svg{stroke:#fdd663}.rail .psound svg{stroke:#c58af9}.rail .pshare svg{stroke:#81c995}.rail .pinfo svg{stroke:#78d9ec}.rail .pinfo svg circle{fill:#78d9ec}
+.rail .pmap svg{stroke:#8ab4f8}.rail .psound svg{stroke:#c58af9}.rail .pinfo svg{stroke:#78d9ec}.rail .pinfo svg circle{fill:#78d9ec}
 @media (max-width:600px),(hover:none){
   .rail .pburger{display:flex}
   .rail:not(.open) button:not(.pburger){height:0;opacity:0;border-top-width:0;pointer-events:none}
@@ -162,7 +162,6 @@ button{font-family:var(--font)}
 .pr{width:0;height:0;pointer-events:none}
 .pr .tag{position:absolute;transform:translate(-50%,-50%);padding:2px 7px;border-radius:9px;background:rgba(32,33,36,.5);font:500 10.5px var(--font);color:#fff;white-space:nowrap;opacity:0;transition:opacity .25s}
 .pr .tag.on{opacity:.9}
-.no-tags .pr .tag{display:none}
 .hs{width:0;height:0}
 .hs .wrap{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer}
 .hs .wrap .ic{width:34px;height:34px;border-radius:50%;background:rgba(32,33,36,.72);box-shadow:0 2px 8px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;transition:transform .15s ease-out}
@@ -175,7 +174,7 @@ button{font-family:var(--font)}
 .toast svg{width:20px;height:20px;flex:none;fill:none;stroke:#8ab4f8;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 
 </style></head>
-<body class="no-tags">
+<body>
 <div id="pano"></div>
 
 <div class="top">
@@ -208,9 +207,7 @@ button{font-family:var(--font)}
   </svg>
 </button>
   <button class="pmap" id="mapBtn" type="button" aria-label="Afficher la carte" title="Afficher la carte" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg></button>
-  <button class="ptags" id="tagsBtn" type="button" aria-label="Afficher les noms des produits" title="Afficher les noms des produits" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M12 3H4v8l9.3 9.3a1.5 1.5 0 0 0 2.1 0l5.9-5.9a1.5 1.5 0 0 0 0-2.1L12 3z"/><circle cx="8" cy="7.5" r="1.3" fill="#fff" stroke="none"/></svg></button>
   <button class="psound" id="soundBtn" type="button" aria-label="Activer le son" title="Activer le son" aria-pressed="false"><svg class="ic-off" viewBox="0 0 24 24"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4z"/><path d="m16 9.5 5 5M21 9.5l-5 5"/></svg><svg class="ic-on" viewBox="0 0 24 24"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4z"/><path d="M15.5 9a4.2 4.2 0 0 1 0 6M18 6.5a7.8 7.8 0 0 1 0 11"/></svg></button>
-  <button class="pshare" id="shareBtn" type="button" aria-label="Partager cette vue" title="Partager cette vue"><svg viewBox="0 0 24 24"><path d="M12 15V3M7.5 7.5 12 3l4.5 4.5"/><path d="M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/></svg></button>
   <button class="pinfo" id="infoBtn" type="button" aria-label="Informations"><svg viewBox="0 0 24 24"><circle cx="12" cy="5.5" r="2" fill="#fff" stroke="none"/><path d="M12 11v8"/></svg></button>
   <button class="pburger" id="menuBtn" type="button" aria-label="Ouvrir le menu" title="Ouvrir le menu" aria-expanded="false"><svg class="ic-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg class="ic-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
 </div>
@@ -448,7 +445,6 @@ function updateGuide() {
   var name = NAMES[best.createTooltipArgs];
   if (guideLabel.textContent !== name) guideLabel.textContent = name;
 }
-document.getElementById('tagsBtn').onclick = function () { var off = document.body.classList.toggle('no-tags'), t = off ? 'Afficher les noms des produits' : 'Masquer les noms des produits'; this.setAttribute('aria-pressed', String(!off)); this.setAttribute('aria-label', t); this.title = t; };
 viewer.on('load', function () { document.body.classList.remove('moving'); if (arriving) { arriving = false; viewer.setHfov(100, 1100); } });
 // sound design: generated in the page, off until the visitor turns it on
 var audioCtx = null, soundOn = false;
@@ -495,14 +491,29 @@ viewer.on('load', function addProducts() {
     });
   });
 });
-function showTags(k) {
-  var yaw = viewer.getYaw(), reach = viewer.getHfov() / 5;
-  (PRODUCTS[k] || []).forEach(function (p) {
+// touching an object shows where it comes from for a few seconds
+var activeTag = null, tagTimer = 0, tapStart = null, panoEl = document.getElementById('pano');
+function hideTag() { clearTimeout(tagTimer); if (activeTag) { activeTag.classList.remove('on'); activeTag = null; } }
+function tapProduct(ev) {
+  var c = viewer.mouseEventToCoords(ev), best = null, bd = 16, r = Math.PI / 180;
+  (PRODUCTS[viewer.getScene()] || []).forEach(function (p) {
     if (!p.args || !p.args.el) return;
-    var d = Math.abs(((p[1] - yaw + 540) % 360) - 180);
-    p.args.el.classList.toggle('on', d < reach);
+    var cs = Math.sin(c[0] * r) * Math.sin(p[2] * r) + Math.cos(c[0] * r) * Math.cos(p[2] * r) * Math.cos((c[1] - p[1]) * r);
+    var d = Math.acos(Math.min(1, Math.max(-1, cs))) / r;
+    if (d < bd) { bd = d; best = p; }
   });
+  hideTag();
+  if (!best) return;
+  playClick(); activeTag = best.args.el; activeTag.classList.add('on'); tagTimer = setTimeout(hideTag, 4000);
 }
+panoEl.addEventListener('pointerdown', function (e) { tapStart = [e.clientX, e.clientY, Date.now()]; }, true);
+panoEl.addEventListener('pointerup', function (e) {
+  if (!tapStart) return;
+  var moved = Math.hypot(e.clientX - tapStart[0], e.clientY - tapStart[1]), quick = Date.now() - tapStart[2] < 400;
+  tapStart = null;
+  if (moved < 8 && quick && !e.target.closest('.hs')) tapProduct(e);
+}, true);
+viewer.on('scenechange', hideTag);
 (function tick() {
   var k = viewer.getScene();
   if (XY[k]) {
@@ -512,7 +523,6 @@ function showTags(k) {
     cpath.style.transform = 'rotate(' + (-viewer.getYaw()) + 'deg)';
     if (goingNorth) { if (Math.abs(viewer.getYaw()) < 1) { goingNorth = false; compassBtn.classList.add('north'); } }
     else if (compassBtn.classList.contains('north') && Math.abs(viewer.getYaw()) > 2) { compassBtn.classList.remove('north'); beforeNorth = null; }
-    showTags(k);
     updateGuide();
   }
   requestAnimationFrame(tick);
@@ -535,14 +545,7 @@ holdScroll();
 viewer.on('load', holdScroll);
 var toast = document.getElementById('toast');
 function hideToast() { toast.style.opacity = 0; }
-function linkCopied() { toast.firstChild.style.display = 'none'; toast.lastChild.textContent = 'Lien copié'; toast.style.padding = '0 14px'; toast.style.opacity = 1; setTimeout(hideToast, 2000); }
-document.getElementById('shareBtn').onclick = function () {
-  var url = location.href.split('#')[0].split('?')[0] + '#' + viewer.getScene() + '@' + Math.round(viewer.getYaw()) + ',' + Math.round(viewer.getPitch());
-  if (navigator.share) { navigator.share({title: document.title, url: url}).catch(function () {}); return; }
-  if (navigator.clipboard) navigator.clipboard.writeText(url).then(linkCopied, function () { window.prompt('Copiez ce lien :', url); });
-  else window.prompt('Copiez ce lien :', url);
-};
-setTimeout(hideToast, 3500);
+setTimeout(function () { toast.firstChild.style.display = 'none'; toast.lastChild.textContent = 'Touchez un objet pour voir sa marque'; toast.style.padding = '0 14px'; toast.style.opacity = 1; setTimeout(hideToast, 3500); }, 3500);
 window.addEventListener('pointerdown', hideToast, {once: true, capture: true});
 setTimeout(layout, 50);
 

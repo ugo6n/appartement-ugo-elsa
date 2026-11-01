@@ -45,7 +45,7 @@ Dans Blender : X = x/100, Y = −y/100, Z = z/100 (mètres).
 
 ## Interface actuelle (préférences d'Ugo — à respecter)
 - DA : coins arrondis, ombres douces, police Google Sans / Roboto. Ce qui flotte sur la vue est sur fond sombre à texte blanc. Dans la barre, **seuls les pictos sont en couleur** (teintes douces), jamais le fond : Ugo a trouvé les ronds colorés trop chargés. La fiche infos reste blanche pour la lecture.
-- **Commandes** : une seule barre sombre en bas à droite : boussole, carte, noms des produits (désactivés par défaut), son (coupé par défaut), partage (lien vers la pièce et l'angle, ex. `#chambre@-140,-12`), infos. Sur téléphone, elle se déroule depuis un **menu burger** ; sur ordinateur, elle reste visible. Pas d'étiquette avec le nom de la pièce (retirée à la demande d'Ugo).
+- **Commandes** : une seule barre sombre en bas à droite : boussole, carte, son (coupé par défaut), infos. Sur téléphone, elle se déroule depuis un **menu burger** ; sur ordinateur, elle reste visible. Boutons Partager et étiquette retirés à la demande d'Ugo. Pas d'étiquette avec le nom de la pièce.
 - **Sons** très simples, générés dans la page : petit clic sur les boutons, léger souffle au changement de pièce.
 - Interface **minimale** : pas de titre, pas de barre de boutons en haut, pas de système de note (refusé).
 - Passages entre pièces : **petit rond sombre + flèche blanche + nom en petit**. Pas plus grands au repos (léger grossissement au survol de la souris seulement), pas d'animation qui clignote.
@@ -53,7 +53,7 @@ Dans Blender : X = x/100, Y = −y/100, Z = z/100 (mètres).
 - Pas de ligne bleue au sol (essayée puis abandonnée : elle passe sur les meubles).
 - **Liens entre pièces** : l'entrée et le séjour se relient directement ; le séjour mène aussi à la chambre et à la salle d'eau.
 - **Boussole** façon Waze : petite flèche rouge qui tourne avec la vue, sans lettres. Clic = retour au nord, et seulement alors triangle rouge + N. Nouveau clic sur le N = retour à l'angle précédent.
-- **Provenance des produits** : toutes petites étiquettes (`PRODUCTS` dans `index.html`) visibles seulement quand on regarde vers le produit. Les marques données par Ugo le 2026-11-01 priment sur les références de l'historique ci-dessus (ex. arbre à chat Animalis, luminaire du séjour Leroy Merlin, chevets Sklum).
+- **Provenance des produits** : toucher un objet affiche sa marque environ 4 secondes (`PRODUCTS` dans `index.html`, zone de 16° autour de chaque point) ; un message l'indique au démarrage. Les marques données par Ugo le 2026-11-01 priment sur les références de l'historique ci-dessus (ex. arbre à chat Animalis, luminaire du séjour Leroy Merlin, chevets Sklum).
 - **Mobile d'abord** : penser et tester l'interface sur iPhone en premier.
 - **Démarrage** : la visite commence à l'entrée, carte fermée. Message d'accueil = pastille blanche en haut, qui disparaît au premier toucher.
 - **Mini-plan fermé par défaut**, ouvert par le bouton carte, à gauche des boutons : vraie vue du dessus découpée à la forme de l'appartement sur fond gris clair, cadre en verre sombre, **point bleu + cône de vue** ; clic sur une pièce pour y aller.
