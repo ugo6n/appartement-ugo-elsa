@@ -47,7 +47,7 @@ Dans Blender : X = x/100, Y = −y/100, Z = z/100 (mètres).
 - Passages entre pièces : **petit rond blanc + flèche bleue + nom en petit**. Pas plus grands au repos (léger grossissement seulement au survol de la souris), pas d'animation qui clignote.
 - Pas de ligne bleue au sol (essayée puis abandonnée : elle passe sur les meubles).
 - **Liens entre pièces** : l'entrée et le séjour se relient directement ; le séjour mène aussi à la chambre et à la salle d'eau.
-- **Boussole** Google Maps (N rouge, E, S, O) à cadran gradué, qui tourne avec la vue ; clic = retour au nord.
+- **Boussole** façon Waze sur rond blanc : simple aiguille rouge et grise qui tourne avec la vue, sans lettres. Clic = retour au nord, et seulement alors triangle rouge + N, jusqu'au prochain mouvement.
 - **Mobile d'abord** : penser et tester l'interface sur iPhone en premier.
 - **Démarrage** : la visite commence à l'entrée, carte fermée. Message d'accueil = pastille blanche en haut, qui disparaît au premier toucher.
 - **Mini-plan** en bas à droite, **fermé par défaut** (fermé : ⓘ à part + une pastille regroupant le nom de la pièce et l'icône carte, cliquable pour ouvrir). Ouvert : carte blanche avec bandeau (nom, ⓘ, flèche pour masquer)

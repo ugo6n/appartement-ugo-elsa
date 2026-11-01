@@ -30,6 +30,9 @@ scenes = {k: {'title': pts[k][2], 'type': 'equirectangular', 'panorama': f'{k}.j
               'pitch': -4, 'hfov': 100, 'hotSpots': []} for k in order}
 for a, b, via in links:
     scenes[a]['hotSpots'].append(hs(a, b, via)); scenes[b]['hotSpots'].append(hs(b, a, via))
+for a, b, yaw, pitch in [('entree', 'repas', -59, -10), ('entree', 'sejour', -74, -14.1), ('repas', 'entree', 176, -14)]:
+    h = next(h for h in scenes[a]['hotSpots'] if h['createTooltipArgs'] == b)
+    h.update(yaw=yaw, pitch=pitch); h['clickHandlerArgs'].update(yaw=yaw, pitch=pitch)
 scenes['sejour']['hotSpots'].append(dict(hs('sejour', 'sde', (743, 486)), pitch=1))
 scenes['sejour']['hotSpots'].append(hs('sejour', 'chambre', (512, 436)))
 cfg = json.dumps({'default': {'firstScene': 'entree', 'sceneFadeDuration': 900, 'autoLoad': True, 'showControls': False,
@@ -112,6 +115,9 @@ button{font-family:var(--font)}
 .compass{position:fixed;right:12px;bottom:calc(var(--planh) + 26px + env(safe-area-inset-bottom));z-index:9;width:56px;height:56px;border-radius:50%;border:0;padding:3px;background:#fff;box-shadow:var(--chip-sh);cursor:pointer}
 .compass svg{width:100%;height:100%;display:block;transition:transform .06s linear}
 .compass:active{transform:scale(.94)}
+.compass .n-state{display:none}
+.compass.north #dial{display:none}
+.compass.north .n-state{display:block}
 :root{--planh:130px}
 /* mini plan card (top view) */
 .plan{position:fixed;right:12px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:9;background:#fff;border-radius:16px;box-shadow:var(--chip-sh);
@@ -201,16 +207,11 @@ button{font-family:var(--font)}
 
 <button class="compass" id="compass" type="button" aria-label="Boussole : revenir au nord">
   <svg viewBox="0 0 100 100" id="dial">
-    <circle cx="50" cy="50" r="47" fill="#fff"/>
-    <circle cx="50" cy="50" r="44" fill="none" stroke="#dadce0" stroke-width="3" pathLength="360" stroke-dasharray="1.1 13.9" stroke-dashoffset=".55"/>
-    <circle cx="50" cy="50" r="43.5" fill="none" stroke="#80868b" stroke-width="4" pathLength="360" stroke-dasharray="1.8 88.2" stroke-dashoffset=".9"/>
-    <path d="M50 2.5 L54 9 H46 Z" fill="#ea4335"/>
-    <g font-family="Google Sans, Roboto, Arial" font-weight="600" font-size="16" text-anchor="middle" dominant-baseline="central">
-      <text x="50" y="19" fill="#ea4335">N</text><text x="81" y="50" fill="#5f6368">E</text>
-      <text x="50" y="81" fill="#5f6368">S</text><text x="19" y="50" fill="#5f6368">O</text></g>
-    <path d="M50 28 L50 50 L44.5 50 Z" fill="#f28b82"/><path d="M50 28 L50 50 L55.5 50 Z" fill="#d93025"/>
-    <path d="M50 72 L50 50 L44.5 50 Z" fill="#dadce0"/><path d="M50 72 L50 50 L55.5 50 Z" fill="#9aa0a6"/>
-    <circle cx="50" cy="50" r="3" fill="#fff" stroke="#5f6368" stroke-width="1.4"/>
+    <path d="M50 16 L64 50 H36 Z" fill="#ea4335"/><path d="M50 84 L64 50 H36 Z" fill="#9aa0a6"/>
+  </svg>
+  <svg viewBox="0 0 100 100" class="n-state">
+    <path d="M50 14 L63 40 H37 Z" fill="#ea4335"/>
+    <text x="50" y="64" font-family="Google Sans, Roboto, Arial" font-weight="700" font-size="30" text-anchor="middle" dominant-baseline="central" fill="#1f1f1f">N</text>
   </svg>
 </button>
 
@@ -318,7 +319,8 @@ function mark() {
 }
 viewer.on('scenechange', function () { setTimeout(mark, 30); });
 viewer.on('load', mark);
-document.getElementById('compass').onclick = function () { viewer.setYaw(0, 600); viewer.setPitch(-4, 600); };
+var compassBtn = document.getElementById('compass');
+compassBtn.onclick = function () { viewer.setYaw(0, 600); viewer.setPitch(-4, 600); setTimeout(function () { compassBtn.classList.add('north'); }, 650); };
 var cone = document.getElementById('cone'), cpath = document.getElementById('dial');
 (function tick() {
   var k = viewer.getScene();
@@ -327,6 +329,7 @@ var cone = document.getElementById('cone'), cpath = document.getElementById('dia
     var a1 = yaw - half, a2 = yaw + half;
     cone.setAttribute('d', 'M' + x + ',' + y + ' L' + (x + R * Math.sin(a1)) + ',' + (y - R * Math.cos(a1)) + ' A' + R + ',' + R + ' 0 0,1 ' + (x + R * Math.sin(a2)) + ',' + (y - R * Math.cos(a2)) + ' Z');
     cpath.style.transform = 'rotate(' + (-viewer.getYaw()) + 'deg)';
+    if (Math.abs(viewer.getYaw()) > 2) compassBtn.classList.remove('north');
   }
   requestAnimationFrame(tick);
 })();
