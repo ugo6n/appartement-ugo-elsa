@@ -27,7 +27,7 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%;background:#e8e2d6;font-family:var(--font);color:var(--ink);overflow:hidden;-webkit-font-smoothing:antialiased}
 #pano{position:absolute;top:0;left:0;width:100%;height:100vh;height:100lvh}
-@media (hover:none){html,body{overflow:visible;overscroll-behavior:none;touch-action:none}#pano{top:-70px;height:calc(100% + 140px)}.info{touch-action:pan-y}}
+@media (hover:none){html,body{overflow:visible;overscroll-behavior:none;touch-action:none}body{height:calc(100vh + 200px);height:calc(100lvh + 200px)}#pano{height:calc(100vh + 200px);height:calc(100lvh + 200px)}.info{touch-action:pan-y}}
 .pnlm-panorama-info,.pnlm-about-msg{display:none!important}
 .pnlm-load-box{display:none!important;background:#fff!important;color:var(--ink)!important;border-radius:16px;box-shadow:var(--sh);font-family:var(--font)!important}
 .pnlm-load-box p{display:none}.pnlm-lbar{border-color:#dadce0!important}.pnlm-lbar-fill{background:var(--blue)!important}
@@ -145,7 +145,7 @@ button{font-family:var(--font)}
 .toast svg{width:20px;height:20px;flex:none;fill:none;stroke:#8ab4f8;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 
 </style></head>
-<body>
+<body class="no-tags">
 <div id="pano"></div>
 
 <div class="top">
@@ -178,7 +178,7 @@ button{font-family:var(--font)}
   </svg>
 </button>
   <button class="pmap" id="mapBtn" type="button" aria-label="Afficher la carte" title="Afficher la carte" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg></button>
-  <button class="ptags" id="tagsBtn" type="button" aria-label="Masquer les noms des produits" title="Masquer les noms des produits" aria-pressed="true"><svg viewBox="0 0 24 24"><path d="M12 3H4v8l9.3 9.3a1.5 1.5 0 0 0 2.1 0l5.9-5.9a1.5 1.5 0 0 0 0-2.1L12 3z"/><circle cx="8" cy="7.5" r="1.3" fill="#fff" stroke="none"/></svg></button>
+  <button class="ptags" id="tagsBtn" type="button" aria-label="Afficher les noms des produits" title="Afficher les noms des produits" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M12 3H4v8l9.3 9.3a1.5 1.5 0 0 0 2.1 0l5.9-5.9a1.5 1.5 0 0 0 0-2.1L12 3z"/><circle cx="8" cy="7.5" r="1.3" fill="#fff" stroke="none"/></svg></button>
   <button class="pshare" id="shareBtn" type="button" aria-label="Partager cette vue" title="Partager cette vue"><svg viewBox="0 0 24 24"><path d="M12 15V3M7.5 7.5 12 3l4.5 4.5"/><path d="M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/></svg></button>
   <button class="pinfo" id="infoBtn" type="button" aria-label="Informations"><svg viewBox="0 0 24 24"><circle cx="12" cy="5.5" r="2" fill="#fff" stroke="none"/><path d="M12 11v8"/></svg></button>
 </div>
@@ -455,7 +455,14 @@ var var_h0 = 0;
 var viewDone = false;
 if (hasView) viewer.on('load', function () { if (viewDone) return; viewDone = true; viewer.setYaw(hv[0], 0); viewer.setPitch(hv[1], 0); });
 window.addEventListener('hashchange', function () { var h = location.hash.slice(1).split('@')[0]; if (NAMES[h]) go(h); });
-window.addEventListener('scroll', function () { if (window.scrollY) window.scrollTo(0, 0); });
+// on phones the view is 200px taller than the screen and stays scrolled by half of it, so it runs under Safari's bars
+var touchOnly = window.matchMedia('(hover:none)').matches;
+function holdScroll() { if (touchOnly && window.scrollY !== 100) window.scrollTo(0, 100); }
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.addEventListener('scroll', holdScroll);
+window.addEventListener('resize', holdScroll);
+holdScroll();
+viewer.on('load', holdScroll);
 var toast = document.getElementById('toast');
 function hideToast() { toast.style.opacity = 0; }
 function linkCopied() { toast.firstChild.style.display = 'none'; toast.lastChild.textContent = 'Lien copié'; toast.style.padding = '0 14px'; toast.style.opacity = 1; setTimeout(hideToast, 2000); }
