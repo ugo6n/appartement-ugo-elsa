@@ -123,6 +123,9 @@ button{font-family:var(--font)}
   .info.on{transform:none}.info .grab{display:none}}
 
 /* hotspots : compact white dots with small label */
+.pr{width:0;height:0;pointer-events:none}
+.pr .tag{position:absolute;transform:translate(-50%,-50%);font:500 11px var(--font);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.85);white-space:nowrap;opacity:0;transition:opacity .25s}
+.pr .tag.on{opacity:.9}
 .hs{width:0;height:0}
 .hs .wrap{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer}
 .hs .wrap .ic{width:34px;height:34px;border-radius:50%;background:#fff;box-shadow:var(--chip-sh);display:flex;align-items:center;justify-content:center;transition:transform .15s ease-out}
@@ -144,7 +147,7 @@ button{font-family:var(--font)}
 
 <button class="compass" id="compass" type="button" aria-label="Boussole : revenir au nord">
   <svg viewBox="0 0 100 100" id="dial">
-    <path d="M50 16 L64 50 H36 Z" fill="#ea4335"/><path d="M50 84 L64 50 H36 Z" fill="#9aa0a6"/>
+    <path d="M50 20 L33 76 L50 66 Z" fill="#ea4335" stroke="#ea4335" stroke-width="3" stroke-linejoin="round"/><path d="M50 20 L67 76 L50 66 Z" fill="#c5221f" stroke="#c5221f" stroke-width="3" stroke-linejoin="round"/>
   </svg>
   <svg viewBox="0 0 100 100" class="n-state">
     <path d="M50 14 L63 40 H37 Z" fill="#ea4335"/>
@@ -367,8 +370,39 @@ function mark() {
 viewer.on('scenechange', function () { setTimeout(mark, 30); });
 viewer.on('load', mark);
 var compassBtn = document.getElementById('compass');
-compassBtn.onclick = function () { viewer.setYaw(0, 600); viewer.setPitch(-4, 600); setTimeout(function () { compassBtn.classList.add('north'); }, 650); };
+var beforeNorth = null, goingNorth = false;
+compassBtn.onclick = function () {
+  if (beforeNorth) { compassBtn.classList.remove('north'); goingNorth = false; viewer.setYaw(beforeNorth[0], 600); viewer.setPitch(beforeNorth[1], 600); beforeNorth = null; return; }
+  beforeNorth = [viewer.getYaw(), viewer.getPitch()]; goingNorth = true;
+  viewer.setYaw(0, 600); viewer.setPitch(-4, 600);
+};
 var cone = document.getElementById('cone'), cpath = document.getElementById('dial');
+// where each piece comes from: tiny labels that only appear when looking towards the product
+var PRODUCTS = {
+  sejour: [['Canapé OMHU', -15.4, -30], ['Meuble IKEA', -156.9, -28], ['Vidéoprojecteur XGIMI', -46.3, -8], ['Nintendo Switch', -59.7, -30], ['Arbre à chat Animalis', 21.9, -24], ['Chaises Sklum', 60.4, -34], ['Table IKEA', 78.4, -20], ['Luminaire Leroy Merlin', -67.4, 34], ['Frigo LISTO', 47.6, -14]],
+  repas: [['Cuisine Cuisinella Venus', 25.7, 13], ['Lave-vaisselle Beko', -18.5, -40], ['Lave-linge Bosch', 16, -40], ['Four Rosières', 92.6, -30], ['Plaque EssentielB', 99, -16], ['Poubelle SONGMICS', 154, -40], ['Frigo LISTO', -37.3, -20], ['Luminaire Sklum', 58.6, 20]],
+  entree: [['Luminaire Sklum', -83, 33]],
+  chambre: [['Chevets Sklum', -164, -24], ['Affiche Leroy Merlin', -145.3, 1], ['Miroir IKEA', -120, -10], ['Bureau IKEA', -81, -18], ['Chaise IKEA', -94.6, -20]],
+  sde: [['Meuble Sklum', 105, -38]]
+};
+function makeTag(div, a) { var t = document.createElement('div'); t.className = 'tag'; t.textContent = a.label; div.appendChild(t); a.el = t; }
+viewer.on('load', function addProducts() {
+  viewer.off('load', addProducts);
+  Object.keys(PRODUCTS).forEach(function (k) {
+    PRODUCTS[k].forEach(function (p) {
+      p.args = {label: p[0]};
+      viewer.addHotSpot({yaw: p[1], pitch: p[2], type: 'info', cssClass: 'pr', createTooltipFunc: makeTag, createTooltipArgs: p.args}, k);
+    });
+  });
+});
+function showTags(k) {
+  var yaw = viewer.getYaw(), reach = viewer.getHfov() / 5;
+  (PRODUCTS[k] || []).forEach(function (p) {
+    if (!p.args || !p.args.el) return;
+    var d = Math.abs(((p[1] - yaw + 540) % 360) - 180);
+    p.args.el.classList.toggle('on', d < reach);
+  });
+}
 (function tick() {
   var k = viewer.getScene();
   if (XY[k]) {
@@ -376,7 +410,9 @@ var cone = document.getElementById('cone'), cpath = document.getElementById('dia
     var a1 = yaw - half, a2 = yaw + half;
     cone.setAttribute('d', 'M' + x + ',' + y + ' L' + (x + R * Math.sin(a1)) + ',' + (y - R * Math.cos(a1)) + ' A' + R + ',' + R + ' 0 0,1 ' + (x + R * Math.sin(a2)) + ',' + (y - R * Math.cos(a2)) + ' Z');
     cpath.style.transform = 'rotate(' + (-viewer.getYaw()) + 'deg)';
-    if (Math.abs(viewer.getYaw()) > 2) compassBtn.classList.remove('north');
+    if (goingNorth) { if (Math.abs(viewer.getYaw()) < 1) { goingNorth = false; compassBtn.classList.add('north'); } }
+    else if (compassBtn.classList.contains('north') && Math.abs(viewer.getYaw()) > 2) { compassBtn.classList.remove('north'); beforeNorth = null; }
+    showTags(k);
   }
   requestAnimationFrame(tick);
 })();
