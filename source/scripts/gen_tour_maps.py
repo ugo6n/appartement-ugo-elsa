@@ -37,7 +37,7 @@ scenes['sejour']['hotSpots'].append(dict(hs('sejour', 'sde', (743, 486)), pitch=
 scenes['sejour']['hotSpots'].append(hs('sejour', 'chambre', (512, 436)))
 cfg = json.dumps({'default': {'firstScene': 'entree', 'sceneFadeDuration': 900, 'autoLoad': True, 'showControls': False,
                               'hfov': 100, 'minHfov': 45, 'maxHfov': 120, 'friction': 0.12}, 'scenes': scenes}, ensure_ascii=False)
-cfg = cfg.replace('"@@HS@@"', 'makeHotspot').replace('"@@WALK@@"', 'walkTo')
+cfg = cfg.replace('"@@HS@@"', 'makeHotspot').replace('"@@WALK@@"', 'walkTo').replace('"firstScene": "entree"', '"firstScene": START')
 names = json.dumps({k: pts[k][2] for k in order}, ensure_ascii=False)
 coords = json.dumps({k: pts[k][:2] for k in order})
 icj = json.dumps(icons)
@@ -69,7 +69,14 @@ html = r'''<!DOCTYPE html>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Appartement de Ugo et Elsa · Visite 360°</title>
+<title>Appartement de Ugo et Elsa</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Appartement de Ugo et Elsa">
+<meta property="og:url" content="https://lucas13032007.github.io/appartement-ugo-elsa/">
+<meta property="og:image" content="https://lucas13032007.github.io/appartement-ugo-elsa/apercu.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <style>''' + css + r'''</style>
@@ -232,6 +239,7 @@ button{font-family:var(--font)}
 </button>
   <button class="pmap" id="mapBtn" type="button" aria-label="Afficher la carte" title="Afficher la carte" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg></button>
   <button class="ptags" id="tagsBtn" type="button" aria-label="Masquer les noms des produits" title="Masquer les noms des produits" aria-pressed="true"><svg viewBox="0 0 24 24"><path d="M12 3H4v8l9.3 9.3a1.5 1.5 0 0 0 2.1 0l5.9-5.9a1.5 1.5 0 0 0 0-2.1L12 3z"/><circle cx="8" cy="7.5" r="1.3" fill="#fff" stroke="none"/></svg></button>
+  <button class="pshare" id="shareBtn" type="button" aria-label="Partager cette vue" title="Partager cette vue"><svg viewBox="0 0 24 24"><path d="M12 15V3M7.5 7.5 12 3l4.5 4.5"/><path d="M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/></svg></button>
   <button class="pinfo" id="infoBtn" type="button" aria-label="Informations"><svg viewBox="0 0 24 24"><circle cx="12" cy="5.5" r="2" fill="#fff" stroke="none"/><path d="M12 11v8"/></svg></button>
 </div>
 
@@ -290,6 +298,8 @@ function makeHotspot(div, k) {
   w.innerHTML = '<span class="ic">' + ARROW + '</span><span class="lb"></span>';
   w.lastChild.textContent = NAMES[k]; div.appendChild(w);
 }
+var hp = (location.hash || '').slice(1).split('@'), hv = (hp[1] || '').split(',').map(Number), hasView = hv.length === 2 && !isNaN(hv[0]) && !isNaN(hv[1]);
+var START = /^(sejour|repas|entree|chambre|sde|wc|balcon)$/.test(hp[0]) ? hp[0] : 'entree';
 var viewer = pannellum.viewer('pano', ''' + cfg + r''');
 function go(k) { if (viewer.getScene() !== k) viewer.loadScene(k); }
 
@@ -392,10 +402,18 @@ function closeInfo() { document.getElementById('info').classList.remove('on'); d
 document.getElementById('closeInfo').onclick = closeInfo; document.getElementById('scrim').onclick = closeInfo;
 document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeInfo(); });
 var var_h0 = 0;
-var h0 = (location.hash || '').slice(1); if (NAMES[h0] && h0 !== 'entree') go(h0);
-window.addEventListener('hashchange', function () { var h = location.hash.slice(1); if (NAMES[h]) go(h); });
+var viewDone = false;
+if (hasView) viewer.on('load', function () { if (viewDone) return; viewDone = true; viewer.setYaw(hv[0], 0); viewer.setPitch(hv[1], 0); });
+window.addEventListener('hashchange', function () { var h = location.hash.slice(1).split('@')[0]; if (NAMES[h]) go(h); });
 var toast = document.getElementById('toast');
 function hideToast() { toast.style.opacity = 0; }
+function linkCopied() { toast.firstChild.style.display = 'none'; toast.lastChild.textContent = 'Lien copié'; toast.style.padding = '0 14px'; toast.style.opacity = 1; setTimeout(hideToast, 2000); }
+document.getElementById('shareBtn').onclick = function () {
+  var url = location.href.split('#')[0].split('?')[0] + '#' + viewer.getScene() + '@' + Math.round(viewer.getYaw()) + ',' + Math.round(viewer.getPitch());
+  if (navigator.share) { navigator.share({title: document.title, url: url}).catch(function () {}); return; }
+  if (navigator.clipboard) navigator.clipboard.writeText(url).then(linkCopied, function () { window.prompt('Copiez ce lien :', url); });
+  else window.prompt('Copiez ce lien :', url);
+};
 setTimeout(hideToast, 3500);
 window.addEventListener('pointerdown', hideToast, {once: true, capture: true});
 setTimeout(layout, 50);

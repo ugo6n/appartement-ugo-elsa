@@ -29,6 +29,7 @@ Tout push sur `main` met le site à jour en 1–2 minutes.
 |---|---|
 | `index.html` | Toute la page (HTML + CSS + JS + Pannellum 2.5.7 intégré en ligne). **C'est la référence** : le modifier directement. `source/scripts/gen_tour_maps.py` l'a généré à l'origine et reçoit les mêmes modifications, mais il contient encore d'anciens morceaux (ex. `badge`, `rate`) : ne pas écraser `index.html` avec sa sortie sans comparer. |
 | `sejour.jpg`, `repas.jpg`, `entree.jpg`, `chambre.jpg`, `sde.jpg`, `wc.jpg`, `balcon.jpg` | Vues 360° équirectangulaires. Doivent rester **à la racine** (l'upload de dossiers via le web GitHub ne marchait pas). |
+| `apercu.jpg` | Image d'aperçu 1200×630 pour WhatsApp (vue de la cuisine et de la table depuis le séjour). Titre du site : « Appartement de Ugo et Elsa ». |
 | `plan_top.jpg` | Vue du dessus utilisée par le mini-plan (image placée en `x=-90 y=3 1040×704`, unités = cm du plan ; viewBox `-74 15 1007 680`, découpée à la forme de l'appartement par le clipPath `pshape`). |
 | `source/Appartement-303.blend` | Scène Blender complète (Blender 5.2, textures empaquetées). |
 | `source/*.sh3d` | Fichiers Sweet Home 3D (original et amélioré). |
@@ -43,7 +44,7 @@ Dans Blender : X = x/100, Y = −y/100, Z = z/100 (mètres).
 
 ## Interface actuelle (préférences d'Ugo — à respecter)
 - DA : coins arrondis, ombres douces, police Google Sans / Roboto. **Tout ce qui flotte sur la vue** (barre, étiquettes, ronds de passage, messages) est en **verre sombre semi-transparent** à texte blanc ; la fiche infos reste blanche pour la lecture.
-- **Barre de commandes** verticale en bas à droite : boussole, carte, étiquette (afficher ou masquer les noms des produits, activés par défaut), ⓘ. Pas d'étiquette avec le nom de la pièce (retirée à la demande d'Ugo : on sait où on a cliqué).
+- **Barre de commandes** verticale en bas à droite : boussole, carte, étiquette (afficher ou masquer les noms des produits, activés par défaut), partage (lien vers la pièce et l'angle, ex. `#chambre@-140,-12`), ⓘ. Pas d'étiquette avec le nom de la pièce (retirée à la demande d'Ugo : on sait où on a cliqué).
 - Interface **minimale** : pas de titre, pas de barre de boutons en haut, pas de système de note (refusé).
 - Passages entre pièces : **petit rond sombre + flèche blanche + nom en petit**. Pas plus grands au repos (léger grossissement au survol de la souris seulement), pas d'animation qui clignote.
 - **Aide aux passages** : si aucun rond n'est dans le champ, une pastille en bas au centre (« ‹ Entrée ») tourne la vue vers le plus proche.
