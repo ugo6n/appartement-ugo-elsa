@@ -1,7 +1,7 @@
 # Visite 360° – Appartement de Ugo et Elsa
 
 Site statique publié avec GitHub Pages depuis la branche `main`, à la racine :
-**https://lucas13032007.github.io/appartement-ugo-elsa/**
+**https://ugo6n.github.io/appartement-ugo-elsa/**
 
 Le propriétaire (Ugo) parle français : répondre en français, simplement, sans jargon.
 Tout push sur `main` met le site à jour en 1–2 minutes.
