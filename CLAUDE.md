@@ -44,15 +44,15 @@ séjour (420,220) · cuisine/repas (700,180) · entrée (870,430) · chambre (38
 Dans Blender : X = x/100, Y = −y/100, Z = z/100 (mètres).
 
 ## Interface actuelle (préférences d'Ugo — à respecter)
-- DA : coins arrondis, ombres douces, police Google Sans / Roboto. Ronds de passage, étiquettes et messages en **verre sombre semi-transparent** à texte blanc ; **boutons de commande colorés** (un par fonction) ; la fiche infos reste blanche pour la lecture.
-- **Commandes** : ronds colorés en bas à droite : boussole (rouge), carte (bleu), noms des produits (orange, désactivés par défaut), son (violet, coupé par défaut), partage (vert ; lien vers la pièce et l'angle, ex. `#chambre@-140,-12`), infos (rose). Sur téléphone, ils se déroulent depuis un **menu burger** ; sur ordinateur, ils restent visibles. Pas d'étiquette avec le nom de la pièce (retirée à la demande d'Ugo).
+- DA : coins arrondis, ombres douces, police Google Sans / Roboto. Ce qui flotte sur la vue est sur fond sombre à texte blanc. Dans la barre, **seuls les pictos sont en couleur** (teintes douces), jamais le fond : Ugo a trouvé les ronds colorés trop chargés. La fiche infos reste blanche pour la lecture.
+- **Commandes** : une seule barre sombre en bas à droite : boussole, carte, noms des produits (désactivés par défaut), son (coupé par défaut), partage (lien vers la pièce et l'angle, ex. `#chambre@-140,-12`), infos. Sur téléphone, elle se déroule depuis un **menu burger** ; sur ordinateur, elle reste visible. Pas d'étiquette avec le nom de la pièce (retirée à la demande d'Ugo).
 - **Sons** très simples, générés dans la page : petit clic sur les boutons, léger souffle au changement de pièce.
 - Interface **minimale** : pas de titre, pas de barre de boutons en haut, pas de système de note (refusé).
 - Passages entre pièces : **petit rond sombre + flèche blanche + nom en petit**. Pas plus grands au repos (léger grossissement au survol de la souris seulement), pas d'animation qui clignote.
 - **Aide aux passages** : si aucun rond n'est dans le champ, une pastille en bas au centre (« ‹ Entrée ») tourne la vue vers le plus proche.
 - Pas de ligne bleue au sol (essayée puis abandonnée : elle passe sur les meubles).
 - **Liens entre pièces** : l'entrée et le séjour se relient directement ; le séjour mène aussi à la chambre et à la salle d'eau.
-- **Boussole** façon Waze : petite flèche blanche sur rond rouge qui tourne avec la vue, sans lettres. Clic = retour au nord, et seulement alors triangle rouge + N. Nouveau clic sur le N = retour à l'angle précédent.
+- **Boussole** façon Waze : petite flèche rouge qui tourne avec la vue, sans lettres. Clic = retour au nord, et seulement alors triangle rouge + N. Nouveau clic sur le N = retour à l'angle précédent.
 - **Provenance des produits** : toutes petites étiquettes (`PRODUCTS` dans `index.html`) visibles seulement quand on regarde vers le produit. Les marques données par Ugo le 2026-11-01 priment sur les références de l'historique ci-dessus (ex. arbre à chat Animalis, luminaire du séjour Leroy Merlin, chevets Sklum).
 - **Mobile d'abord** : penser et tester l'interface sur iPhone en premier.
 - **Démarrage** : la visite commence à l'entrée, carte fermée. Message d'accueil = pastille blanche en haut, qui disparaît au premier toucher.
