@@ -42,10 +42,11 @@ séjour (420,220) · cuisine/repas (700,180) · entrée (870,430) · chambre (38
 Dans Blender : X = x/100, Y = −y/100, Z = z/100 (mètres).
 
 ## Interface actuelle (préférences d'Ugo — à respecter)
-- DA : coins arrondis, ombres douces, police Google Sans / Roboto. Commandes en **verre sombre semi-transparent** (Ugo trouvait les pastilles blanches bizarres) ; ronds de passage blancs conservés.
+- DA : coins arrondis, ombres douces, police Google Sans / Roboto. **Tout ce qui flotte sur la vue** (barre, étiquettes, ronds de passage, messages) est en **verre sombre semi-transparent** à texte blanc ; la fiche infos reste blanche pour la lecture.
 - **Barre de commandes** verticale en bas à droite : boussole, carte, ⓘ. Nom de la pièce = petite étiquette à part, en bas à gauche.
 - Interface **minimale** : pas de titre, pas de barre de boutons en haut, pas de système de note (refusé).
-- Passages entre pièces : **petit rond blanc + flèche bleue + nom en petit**. Pas plus grands au repos (léger grossissement seulement au survol de la souris), pas d'animation qui clignote.
+- Passages entre pièces : **petit rond sombre + flèche blanche + nom en petit**. Pas plus grands au repos (léger grossissement au survol de la souris seulement), pas d'animation qui clignote.
+- **Aide aux passages** : si aucun rond n'est dans le champ, une pastille en bas au centre (« ‹ Entrée ») tourne la vue vers le plus proche.
 - Pas de ligne bleue au sol (essayée puis abandonnée : elle passe sur les meubles).
 - **Liens entre pièces** : l'entrée et le séjour se relient directement ; le séjour mène aussi à la chambre et à la salle d'eau.
 - **Boussole** façon Waze : petite flèche rouge qui tourne avec la vue, sans lettres. Clic = retour au nord, et seulement alors triangle rouge + N. Nouveau clic sur le N = retour à l'angle précédent.

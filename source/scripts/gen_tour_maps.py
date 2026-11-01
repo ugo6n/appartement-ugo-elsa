@@ -33,7 +33,7 @@ for a, b, via in links:
 for a, b, yaw, pitch in [('entree', 'repas', -59, -10), ('entree', 'sejour', -74, -14.1), ('repas', 'entree', 176, -14)]:
     h = next(h for h in scenes[a]['hotSpots'] if h['createTooltipArgs'] == b)
     h.update(yaw=yaw, pitch=pitch); h['clickHandlerArgs'].update(yaw=yaw, pitch=pitch)
-scenes['sejour']['hotSpots'].append(dict(hs('sejour', 'sde', (743, 486)), pitch=1))
+scenes['sejour']['hotSpots'].append(dict(hs('sejour', 'sde', (743, 486)), pitch=4))
 scenes['sejour']['hotSpots'].append(hs('sejour', 'chambre', (512, 436)))
 cfg = json.dumps({'default': {'firstScene': 'entree', 'sceneFadeDuration': 900, 'autoLoad': True, 'showControls': False,
                               'hfov': 100, 'minHfov': 45, 'maxHfov': 120, 'friction': 0.12}, 'scenes': scenes}, ensure_ascii=False)
@@ -136,7 +136,13 @@ button{font-family:var(--font)}
 .plan .halo{fill:url(#coneg);pointer-events:none}
 .plan .me{fill:#1a73e8;stroke:#fff;stroke-width:7;pointer-events:none}
 .plan .me-ring{fill:rgba(26,115,232,.2);pointer-events:none}
-.plabel{position:fixed;left:12px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:9;height:32px;padding:0 12px;border-radius:16px;display:flex;align-items:center;font-size:13px;font-weight:500;color:#fff;background:var(--glass);-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.guide{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:9;display:flex;align-items:center;gap:4px;height:36px;padding:0 14px 0 8px;border:0;border-radius:18px;color:#fff;font:500 13px var(--font);white-space:nowrap;cursor:pointer;background:var(--glass);-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.guide[hidden],.plan:not(.closed)~.guide{display:none}
+.guide.right{flex-direction:row-reverse;padding:0 8px 0 14px}
+.guide svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.guide.right svg{transform:rotate(180deg)}
+.guide:active{background:rgba(32,33,36,.82)}
+.plabel{position:fixed;left:12px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:9;height:36px;padding:0 14px;border-radius:18px;display:flex;align-items:center;font-size:13px;font-weight:500;color:#fff;background:var(--glass);-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);box-shadow:0 2px 10px rgba(0,0,0,.25)}
 .plan:not(.closed)~.plabel{left:auto;right:64px;bottom:calc(24px + var(--planh) + env(safe-area-inset-bottom))}
 @media (max-width:600px){.plan{width:min(260px,calc(100vw - 88px))}.pframe{padding:6px}}
 .plan.closed{display:none}
@@ -151,21 +157,21 @@ button{font-family:var(--font)}
 .info .grab{width:36px;height:4px;border-radius:2px;background:#c4c7c5;margin:2px auto 14px}
 .ihead{display:flex;align-items:flex-start;gap:12px}
 .ihead>div{flex:1}
-.info h2{margin:0;font-size:26px;font-weight:400;color:var(--ink)}
+.info h2{margin:0;font-size:24px;font-weight:500;color:var(--ink)}
 .isub{margin-top:4px;font-size:14px;color:var(--muted)}
 .close{width:40px;height:40px;border-radius:50%;border:0;background:#f1f3f4;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
 .close svg{width:20px;height:20px;fill:none;stroke:#444746;stroke-width:2;stroke-linecap:round}
 .addr{display:flex;gap:14px;align-items:flex-start;margin-top:18px;padding:14px 0;border-top:1px solid #e3e3e3;border-bottom:1px solid #e3e3e3;font-size:15px;color:var(--ink);line-height:1.4}
 .addr svg{width:24px;height:24px;flex:none}
 .addr b{font-weight:500}
-.mapbtn{display:flex;align-items:center;justify-content:center;gap:8px;height:44px;margin:14px 0 2px;border-radius:22px;background:#0b57d0;color:#fff;text-decoration:none;font-size:15px;font-weight:500}
+.mapbtn{display:flex;align-items:center;justify-content:center;gap:8px;height:44px;margin:14px 0 2px;border-radius:22px;background:#1a73e8;color:#fff;text-decoration:none;font-size:15px;font-weight:500}
 .mapbtn svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .chip.map{color:#0b57d0;text-decoration:none}.chip.map svg{stroke:#0b57d0}
 .dpe{padding:16px 0;border-bottom:1px solid #e3e3e3}
 .dpe-t{font-size:13px;color:var(--muted);margin-bottom:10px}
 .dpe-scale{display:flex;gap:4px}
-.dpe-scale span{flex:1;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;opacity:.38}
-.dpe-scale span.on{opacity:1;transform:scaleY(1.22);box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.dpe-scale span{flex:1;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#1f1f1f;font-weight:700;font-size:14px;opacity:.38}
+.dpe-scale span.on{color:#fff;opacity:1;transform:scaleY(1.22);box-shadow:0 2px 6px rgba(0,0,0,.25)}
 .dpe-n{margin-top:10px;font-size:14px;color:var(--ink)}
 .dpe-n b{font-weight:700;color:#3d8b40}
 .rows{list-style:none;margin:0;padding:6px 0 0}
@@ -179,16 +185,16 @@ button{font-family:var(--font)}
 
 /* hotspots : compact white dots with small label */
 .pr{width:0;height:0;pointer-events:none}
-.pr .tag{position:absolute;transform:translate(-50%,-50%);font:500 11px var(--font);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.85);white-space:nowrap;opacity:0;transition:opacity .25s}
+.pr .tag{position:absolute;transform:translate(-50%,-50%);padding:2px 7px;border-radius:9px;background:rgba(32,33,36,.5);font:500 10.5px var(--font);color:#fff;white-space:nowrap;opacity:0;transition:opacity .25s}
 .pr .tag.on{opacity:.9}
 .hs{width:0;height:0}
 .hs .wrap{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer}
-.hs .wrap .ic{width:34px;height:34px;border-radius:50%;background:#fff;box-shadow:var(--chip-sh);display:flex;align-items:center;justify-content:center;transition:transform .15s ease-out}
+.hs .wrap .ic{width:34px;height:34px;border-radius:50%;background:rgba(32,33,36,.72);box-shadow:0 2px 8px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;transition:transform .15s ease-out}
 .hs .wrap .ic svg{width:18px;height:18px}
 @media (hover:hover){.hs .wrap:hover .ic{transform:scale(1.18)}}
-.hs .wrap .lb{font:500 12px var(--font);color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.7);white-space:nowrap}
-.hs .wrap:active .ic{background:#e8f0fe}
-.toast{position:fixed;left:50%;top:calc(16px + env(safe-area-inset-top));transform:translateX(-50%);z-index:13;display:flex;align-items:center;gap:8px;height:40px;padding:0 16px 0 12px;color:#fff;border-radius:20px;font-size:14px;font-weight:500;white-space:nowrap;
+.hs .wrap .lb{padding:1px 7px;border-radius:9px;background:rgba(32,33,36,.55);font:500 11px var(--font);color:#fff;white-space:nowrap}
+.hs .wrap:active .ic{background:rgba(32,33,36,.92)}
+.toast{position:fixed;left:50%;top:calc(16px + env(safe-area-inset-top));transform:translateX(-50%);z-index:13;display:flex;align-items:center;gap:8px;height:36px;padding:0 14px 0 10px;color:#fff;border-radius:18px;font-size:13px;font-weight:500;white-space:nowrap;
   background:var(--glass);-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);box-shadow:0 2px 10px rgba(0,0,0,.25);transition:opacity .4s;pointer-events:none}
 .toast svg{width:20px;height:20px;flex:none;fill:none;stroke:#8ab4f8;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 
@@ -214,14 +220,15 @@ button{font-family:var(--font)}
     <polygon class="pline" points="-74,27 178,27 178,15 933,15 933,695 27,695 27,353 -74,353"/>
   </svg></div>
 </div>
+<button class="guide" id="guide" type="button" hidden aria-label="Tourner vers le passage le plus proche"><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg><span id="guideLabel"></span></button>
 <div class="plabel" id="plabel">Entrée</div>
 <div class="rail">
   <button class="compass" id="compass" type="button" aria-label="Boussole : revenir au nord">
   <svg viewBox="0 0 100 100" id="dial">
-    <path d="M50 20 L33 76 L50 66 Z" fill="#ea4335" stroke="#ea4335" stroke-width="3" stroke-linejoin="round"/><path d="M50 20 L67 76 L50 66 Z" fill="#c5221f" stroke="#c5221f" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M50 20 L33 76 L50 66 Z" fill="#ff7a6e" stroke="#ff7a6e" stroke-width="3" stroke-linejoin="round"/><path d="M50 20 L67 76 L50 66 Z" fill="#ea4335" stroke="#ea4335" stroke-width="3" stroke-linejoin="round"/>
   </svg>
   <svg viewBox="0 0 100 100" class="n-state">
-    <path d="M50 14 L63 40 H37 Z" fill="#ea4335" stroke="none"/>
+    <path d="M50 14 L63 40 H37 Z" fill="#ff7a6e" stroke="none"/>
     <text x="50" y="64" font-family="Google Sans, Roboto, Arial" font-weight="700" font-size="30" text-anchor="middle" dominant-baseline="central" fill="#fff" stroke="none">N</text>
   </svg>
 </button>
@@ -268,7 +275,7 @@ button{font-family:var(--font)}
 var NAMES = ''' + names + r''', XY = ''' + coords + r''', ICONS = ''' + icj + r''';
 var ORDER = Object.keys(NAMES);
 function icon(k, color) { return '<svg viewBox="0 0 24 24" fill="none" stroke="' + (color || 'currentColor') + '" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' + ICONS[k] + '</svg>'; }
-var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="#1a73e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>';
+var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>';
 var busy = false;
 function walkTo(ev, a) {
   if (busy) return; busy = true;
@@ -332,6 +339,23 @@ var PRODUCTS = {
   chambre: [['Chevets Sklum', -164, -24], ['Affiche Leroy Merlin', -145.3, 1], ['Miroir IKEA', -120, -10], ['Bureau IKEA', -81, -18], ['Chaise IKEA', -94.6, -20]],
   sde: [['Meuble Sklum', 105, -38]]
 };
+// when no passage is in view, a small pill turns the view towards the nearest one
+var guideBtn = document.getElementById('guide'), guideLabel = document.getElementById('guideLabel'), guideTo = null;
+guideBtn.onclick = function () { if (guideTo !== null) { viewer.setYaw(guideTo, 500); viewer.setPitch(-6, 500); } };
+function updateGuide() {
+  var yaw = viewer.getYaw(), half = viewer.getHfov() / 2, best = null, bd = 999;
+  (viewer.getConfig().hotSpots || []).forEach(function (h) {
+    if (h.cssClass !== 'hs') return;
+    var d = ((h.yaw - yaw + 540) % 360) - 180;
+    if (Math.abs(d) < Math.abs(bd)) { bd = d; best = h; }
+  });
+  var show = best && Math.abs(bd) > half * .85;
+  if (guideBtn.hidden === !!show) guideBtn.hidden = !show;
+  if (!show) { guideTo = null; return; }
+  guideTo = best.yaw; guideBtn.classList.toggle('right', bd > 0);
+  var name = NAMES[best.createTooltipArgs];
+  if (guideLabel.textContent !== name) guideLabel.textContent = name;
+}
 function makeTag(div, a) { var t = document.createElement('div'); t.className = 'tag'; t.textContent = a.label; div.appendChild(t); a.el = t; }
 viewer.on('load', function addProducts() {
   viewer.off('load', addProducts);
@@ -360,6 +384,7 @@ function showTags(k) {
     if (goingNorth) { if (Math.abs(viewer.getYaw()) < 1) { goingNorth = false; compassBtn.classList.add('north'); } }
     else if (compassBtn.classList.contains('north') && Math.abs(viewer.getYaw()) > 2) { compassBtn.classList.remove('north'); beforeNorth = null; }
     showTags(k);
+    updateGuide();
   }
   requestAnimationFrame(tick);
 })();
