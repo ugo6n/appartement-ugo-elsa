@@ -42,16 +42,17 @@ séjour (420,220) · cuisine/repas (700,180) · entrée (870,430) · chambre (38
 Dans Blender : X = x/100, Y = −y/100, Z = z/100 (mètres).
 
 ## Interface actuelle (préférences d'Ugo — à respecter)
-- DA **Google Maps** : blanc, coins arrondis, ombres douces, police Google Sans / Roboto.
+- DA : coins arrondis, ombres douces, police Google Sans / Roboto. Commandes en **verre sombre semi-transparent** (Ugo trouvait les pastilles blanches bizarres) ; ronds de passage blancs conservés.
+- **Barre de commandes** verticale en bas à droite : boussole, carte, ⓘ. Nom de la pièce = petite étiquette à part, en bas à gauche.
 - Interface **minimale** : pas de titre, pas de barre de boutons en haut, pas de système de note (refusé).
 - Passages entre pièces : **petit rond blanc + flèche bleue + nom en petit**. Pas plus grands au repos (léger grossissement seulement au survol de la souris), pas d'animation qui clignote.
 - Pas de ligne bleue au sol (essayée puis abandonnée : elle passe sur les meubles).
 - **Liens entre pièces** : l'entrée et le séjour se relient directement ; le séjour mène aussi à la chambre et à la salle d'eau.
-- **Boussole** façon Waze sur rond blanc : simple aiguille rouge et grise qui tourne avec la vue, sans lettres. Clic = retour au nord, et seulement alors triangle rouge + N, jusqu'au prochain mouvement.
+- **Boussole** façon Waze : petite flèche rouge qui tourne avec la vue, sans lettres. Clic = retour au nord, et seulement alors triangle rouge + N. Nouveau clic sur le N = retour à l'angle précédent.
+- **Provenance des produits** : toutes petites étiquettes (`PRODUCTS` dans `index.html`) visibles seulement quand on regarde vers le produit. Les marques données par Ugo le 2026-11-01 priment sur les références de l'historique ci-dessus (ex. arbre à chat Animalis, luminaire du séjour Leroy Merlin, chevets Sklum).
 - **Mobile d'abord** : penser et tester l'interface sur iPhone en premier.
 - **Démarrage** : la visite commence à l'entrée, carte fermée. Message d'accueil = pastille blanche en haut, qui disparaît au premier toucher.
-- **Mini-plan** en bas à droite, **fermé par défaut** (fermé : ⓘ à part + une pastille regroupant le nom de la pièce et l'icône carte, cliquable pour ouvrir). Ouvert : carte blanche avec bandeau (nom, ⓘ, flèche pour masquer)
-  au-dessus de la vraie vue du dessus, découpée à la forme de l'appartement sur fond gris clair, sans bords blancs ; **point bleu + cône de vue** ; clic sur une pièce pour y aller.
+- **Mini-plan fermé par défaut**, ouvert par le bouton carte à gauche de la barre : vraie vue du dessus découpée à la forme de l'appartement sur fond gris clair, cadre en verre sombre, **point bleu + cône de vue** ; clic sur une pièce pour y aller.
 - **Transitions** : la vue tourne vers la porte + léger zoom puis fondu ; aucun écran de chargement (toutes les vues préchargées).
 - **Arrivée dans une pièce** : toujours face à son sujet, jamais devant un mur (angle fixe par pièce, champ `yaw` de chaque scène).
 - **Aucune bande noire** ni artefact sur les images : Ugo y est très attentif.
