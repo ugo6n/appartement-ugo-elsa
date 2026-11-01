@@ -30,6 +30,7 @@ Tout push sur `main` met le site à jour en 1–2 minutes.
 | `index.html` | Toute la page (HTML + CSS + JS + Pannellum 2.5.7 intégré en ligne). **C'est la référence** : le modifier directement. `source/scripts/gen_tour_maps.py` l'a généré à l'origine et reçoit les mêmes modifications, mais il contient encore d'anciens morceaux (ex. `badge`, `rate`) : ne pas écraser `index.html` avec sa sortie sans comparer. |
 | `sejour.jpg`, `repas.jpg`, `entree.jpg`, `chambre.jpg`, `sde.jpg`, `wc.jpg`, `balcon.jpg` | Vues 360° équirectangulaires. Doivent rester **à la racine** (l'upload de dossiers via le web GitHub ne marchait pas). |
 | `apercu.jpg` | Image d'aperçu 1200×630 pour WhatsApp (vue de la cuisine et de la table depuis le séjour). Titre du site : « Appartement de Ugo et Elsa ». |
+| `icone.png`, `favicon.png` | Icône de l'écran d'accueil iPhone (nom affiché : « Appartement ») et de l'onglet. |
 | `plan_top.jpg` | Vue du dessus utilisée par le mini-plan (image placée en `x=-90 y=3 1040×704`, unités = cm du plan ; viewBox `-74 15 1007 680`, découpée à la forme de l'appartement par le clipPath `pshape`). |
 | `source/Appartement-303.blend` | Scène Blender complète (Blender 5.2, textures empaquetées). |
 | `source/*.sh3d` | Fichiers Sweet Home 3D (original et amélioré). |
@@ -55,7 +56,7 @@ Dans Blender : X = x/100, Y = −y/100, Z = z/100 (mètres).
 - **Mobile d'abord** : penser et tester l'interface sur iPhone en premier.
 - **Démarrage** : la visite commence à l'entrée, carte fermée. Message d'accueil = pastille blanche en haut, qui disparaît au premier toucher.
 - **Mini-plan fermé par défaut**, ouvert par le bouton carte à gauche de la barre : vraie vue du dessus découpée à la forme de l'appartement sur fond gris clair, cadre en verre sombre, **point bleu + cône de vue** ; clic sur une pièce pour y aller.
-- **Transitions** : la vue tourne vers la porte + léger zoom puis fondu ; aucun écran de chargement (toutes les vues préchargées).
+- **Transitions** : la vue tourne vers la porte + léger zoom, fondu, puis léger recul à l'arrivée ; ronds et pastilles apparaissent en douceur (animations coupées si l'iPhone demande de réduire les animations) ; aucun écran de chargement (toutes les vues préchargées).
 - **Arrivée dans une pièce** : toujours face à son sujet, jamais devant un mur (angle fixe par pièce, champ `yaw` de chaque scène).
 - **Aucune bande noire** ni artefact sur les images : Ugo y est très attentif.
 - Pas de mention de Claude sur le site.

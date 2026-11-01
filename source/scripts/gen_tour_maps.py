@@ -35,7 +35,7 @@ for a, b, yaw, pitch in [('entree', 'repas', -59, -10), ('entree', 'sejour', -74
     h.update(yaw=yaw, pitch=pitch); h['clickHandlerArgs'].update(yaw=yaw, pitch=pitch)
 scenes['sejour']['hotSpots'].append(dict(hs('sejour', 'sde', (743, 486)), pitch=4))
 scenes['sejour']['hotSpots'].append(hs('sejour', 'chambre', (512, 436)))
-cfg = json.dumps({'default': {'firstScene': 'entree', 'sceneFadeDuration': 900, 'autoLoad': True, 'showControls': False,
+cfg = json.dumps({'default': {'firstScene': 'entree', 'sceneFadeDuration': 700, 'autoLoad': True, 'showControls': False,
                               'hfov': 100, 'minHfov': 45, 'maxHfov': 120, 'friction': 0.12}, 'scenes': scenes}, ensure_ascii=False)
 cfg = cfg.replace('"@@HS@@"', 'makeHotspot').replace('"@@WALK@@"', 'walkTo').replace('"firstScene": "entree"', '"firstScene": START')
 names = json.dumps({k: pts[k][2] for k in order}, ensure_ascii=False)
@@ -70,6 +70,9 @@ html = r'''<!DOCTYPE html>
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Appartement de Ugo et Elsa</title>
+<link rel="apple-touch-icon" sizes="180x180" href="icone.png">
+<link rel="icon" type="image/png" href="favicon.png">
+<meta name="apple-mobile-web-app-title" content="Appartement">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Appartement de Ugo et Elsa">
 <meta property="og:image" content="https://ugo6n.github.io/appartement-ugo-elsa/apercu.jpg?v=2">
@@ -82,7 +85,23 @@ html = r'''<!DOCTYPE html>
 <meta name="twitter:image" content="https://ugo6n.github.io/appartement-ugo-elsa/apercu.jpg?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-<style>''' + css + r'''</style>
+<style>''' + css + r'''.hs .wrap{animation:hsIn .35s ease-out .25s backwards;transition:opacity .18s}
+.moving .hs .wrap{opacity:0}
+.hs .wrap:active .ic{transform:scale(.92)}
+@keyframes hsIn{from{opacity:0;transform:translate(-50%,-50%) scale(.82)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+.plan{transform-origin:100% 100%;transition:opacity .22s ease,transform .26s cubic-bezier(.2,.8,.2,1),visibility .22s}
+.rail button{transition:background .15s}
+.rail button svg{transition:transform .15s}
+.rail .pmap:active svg,.rail .ptags:active svg,.rail .pshare:active svg,.rail .pinfo:active svg{transform:scale(.88)}
+.compass.north .n-state{animation:nIn .22s ease-out}
+@keyframes nIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+.guide{animation:guideIn .24s ease-out;transition:opacity .15s,background .15s}
+.moving .guide{opacity:0}
+@keyframes guideIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.toast{animation:toastIn .3s ease-out .3s backwards}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(-8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
 <style>
 :root{--font:"Google Sans","Product Sans",Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
   --ink:#1f1f1f;--ink2:#444746;--muted:#5f6368;--blue:#0b57d0;--teal:#0e6b75;--chip-sh:0 1px 3px rgba(60,64,67,.3),0 4px 8px 3px rgba(60,64,67,.15);
@@ -120,7 +139,6 @@ button{font-family:var(--font)}
 .fab.round{width:48px;height:48px;border-radius:50%}
 .fab.teal{background:#c4eaf0;color:#00363d}
 .fab:active{filter:brightness(.95)}
-#compass svg{transition:transform .08s linear}
 
 .rail{position:fixed;right:12px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:9;display:flex;flex-direction:column;width:44px;border-radius:22px;overflow:hidden;background:var(--glass);-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);box-shadow:0 2px 10px rgba(0,0,0,.25)}
 .rail button{position:relative;flex:none;width:44px;height:44px;padding:0;border:0;background:none;display:flex;align-items:center;justify-content:center;cursor:pointer}
@@ -153,7 +171,7 @@ button{font-family:var(--font)}
 .guide.right svg{transform:rotate(180deg)}
 .guide:active{background:rgba(32,33,36,.82)}
 @media (max-width:600px){.plan{width:min(260px,calc(100vw - 88px))}.pframe{padding:6px}}
-.plan.closed{display:none}
+.plan.closed{visibility:hidden;opacity:0;transform:translateY(10px) scale(.96);pointer-events:none}
 /* info chip + panel */
 .chip.info{color:#0b57d0}
 .chip.info svg{stroke:#0b57d0}
@@ -287,11 +305,13 @@ var ORDER = Object.keys(NAMES);
 function icon(k, color) { return '<svg viewBox="0 0 24 24" fill="none" stroke="' + (color || 'currentColor') + '" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' + ICONS[k] + '</svg>'; }
 var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>';
 var busy = false;
+var arriving = false;
+function enterRoom(k) { arriving = true; document.body.classList.add('moving'); viewer.loadScene(k, undefined, undefined, 84); }
 function walkTo(ev, a) {
-  if (busy) return; busy = true;
-  viewer.lookAt(Math.max(a.pitch * 0.4, -6), a.yaw, 58, 550, function () {
-    viewer.loadScene(a.k);
-    setTimeout(function () { busy = false; }, 1000);
+  if (busy) return; busy = true; document.body.classList.add('moving');
+  viewer.lookAt(Math.max(a.pitch * 0.4, -6), a.yaw, 62, 650, function () {
+    enterRoom(a.k);
+    setTimeout(function () { busy = false; }, 1100);
   });
 }
 // preload every panorama so switching rooms never shows a loading screen
@@ -304,7 +324,7 @@ function makeHotspot(div, k) {
 var hp = (location.hash || '').slice(1).split('@'), hv = (hp[1] || '').split(',').map(Number), hasView = hv.length === 2 && !isNaN(hv[0]) && !isNaN(hv[1]);
 var START = /^(sejour|repas|entree|chambre|sde|wc|balcon)$/.test(hp[0]) ? hp[0] : 'entree';
 var viewer = pannellum.viewer('pano', ''' + cfg + r''');
-function go(k) { if (viewer.getScene() !== k) viewer.loadScene(k); }
+function go(k) { if (viewer.getScene() !== k) enterRoom(k); }
 
 // chips
 var chips = document.getElementById('chips');
@@ -368,6 +388,7 @@ function updateGuide() {
   if (guideLabel.textContent !== name) guideLabel.textContent = name;
 }
 document.getElementById('tagsBtn').onclick = function () { var off = document.body.classList.toggle('no-tags'), t = off ? 'Afficher les noms des produits' : 'Masquer les noms des produits'; this.setAttribute('aria-pressed', String(!off)); this.setAttribute('aria-label', t); this.title = t; };
+viewer.on('load', function () { document.body.classList.remove('moving'); if (arriving) { arriving = false; viewer.setHfov(100, 1100); } });
 function makeTag(div, a) { var t = document.createElement('div'); t.className = 'tag'; t.textContent = a.label; div.appendChild(t); a.el = t; }
 viewer.on('load', function addProducts() {
   viewer.off('load', addProducts);
