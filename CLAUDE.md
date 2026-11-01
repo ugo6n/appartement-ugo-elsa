@@ -63,7 +63,7 @@ Dans Blender : X = x/100, Y = −y/100, Z = z/100 (mètres).
 Appartement T2 · **18 rue des Folies, 35700 Rennes** · 48,4 m² habitables · balcon 7,3 m² exposé ouest (soleil du soir) ·
 3e étage avec ascenseur · construction 2026 (neuf) · chauffage électrique, radiateurs (Ugo a aussi dit « collectif » — à confirmer) ·
 **DPE B** (GES inconnu) · place de parking n° 46 · local / box à vélos · location (le statut n'est volontairement pas affiché).
-Bouton « Voir sur la carte de Rennes » → Google Maps (une carte intégrée n'était pas possible sur l'ancien hébergement ; sur GitHub Pages
+Bouton « Ouvrir sur Google Maps » (une carte intégrée n'était pas possible sur l'ancien hébergement ; sur GitHub Pages
 un iframe Google Maps / OpenStreetMap est maintenant faisable).
 
 ## Prochaine étape prévue

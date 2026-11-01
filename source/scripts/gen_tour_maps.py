@@ -248,7 +248,7 @@ button{font-family:var(--font)}
   </div>
   <div class="addr"><svg viewBox="0 0 24 24"><path fill="#ea4335" stroke="none" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7z"/><circle cx="12" cy="9" r="2.6" fill="#fff" stroke="none"/></svg>
     <div style="flex:1"><b>18 rue des Folies</b><br>35700 Rennes</div></div>
-  <a class="mapbtn" href="https://www.google.com/maps/search/?api=1&amp;query=18+rue+des+Folies+35700+Rennes" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg>Voir sur la carte de Rennes</a>
+  <a class="mapbtn" href="https://www.google.com/maps/search/?api=1&amp;query=18+rue+des+Folies+35700+Rennes" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg>Ouvrir sur Google Maps</a>
   <div class="dpe">
     <div class="dpe-t">Diagnostic de performance énergétique</div>
     <div class="dpe-scale">
