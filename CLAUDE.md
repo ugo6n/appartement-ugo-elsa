@@ -45,6 +45,7 @@ Dans Blender : X = x/100, Y = −y/100, Z = z/100 (mètres).
 - DA **Google Maps** : blanc, coins arrondis, ombres douces, police Google Sans / Roboto.
 - Interface **minimale** : pas de titre, pas de barre de boutons en haut, pas de système de note (refusé).
 - Passages entre pièces : **petit rond blanc + flèche bleue + nom en petit**. Pas plus grands au repos (léger grossissement seulement au survol de la souris), pas d'animation qui clignote.
+- Pas de ligne bleue au sol (essayée puis abandonnée : elle passe sur les meubles).
 - **Liens entre pièces** : l'entrée et le séjour se relient directement ; le séjour mène aussi à la chambre et à la salle d'eau.
 - **Boussole** Google Maps (N rouge, E, S, O) à cadran gradué, qui tourne avec la vue ; clic = retour au nord.
 - **Mobile d'abord** : penser et tester l'interface sur iPhone en premier.
