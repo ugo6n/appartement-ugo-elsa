@@ -27,7 +27,7 @@ Tout push sur `main` met le site à jour en 1–2 minutes.
 
 | Fichier | Rôle |
 |---|---|
-| `index.html` | Toute la page (HTML + CSS + JS + Pannellum 2.5.7 intégré en ligne). **Généré** par `source/scripts/gen_tour_maps.py` puis chemins d'images mis à la racine. |
+| `index.html` | Toute la page (HTML + CSS + JS + Pannellum 2.5.7 intégré en ligne). **C'est la référence** : le modifier directement. `source/scripts/gen_tour_maps.py` l'a généré à l'origine et reçoit les mêmes modifications, mais il contient encore d'anciens morceaux (ex. `badge`, `rate`) : ne pas écraser `index.html` avec sa sortie sans comparer. |
 | `sejour.jpg`, `repas.jpg`, `entree.jpg`, `chambre.jpg`, `sde.jpg`, `wc.jpg`, `balcon.jpg` | Vues 360° équirectangulaires. Doivent rester **à la racine** (l'upload de dossiers via le web GitHub ne marchait pas). |
 | `plan_top.jpg` | Vue du dessus utilisée par le mini-plan (image placée en `x=-90 y=3 1040×704`, unités = cm du plan ; viewBox `-74 15 1007 680`, découpée à la forme de l'appartement par le clipPath `pshape`). |
 | `source/Appartement-303.blend` | Scène Blender complète (Blender 5.2, textures empaquetées). |
@@ -49,7 +49,7 @@ Dans Blender : X = x/100, Y = −y/100, Z = z/100 (mètres).
 - **Boussole** Google Maps (N rouge, E, S, O) à cadran gradué, qui tourne avec la vue ; clic = retour au nord.
 - **Mobile d'abord** : penser et tester l'interface sur iPhone en premier.
 - **Démarrage** : la visite commence à l'entrée, carte fermée. Message d'accueil = pastille blanche en haut, qui disparaît au premier toucher.
-- **Mini-plan** en bas à droite, **fermé par défaut** (fermé : pastilles nom de la pièce + ⓘ + icône carte). Ouvert : carte blanche avec bandeau (nom, ⓘ, flèche pour masquer)
+- **Mini-plan** en bas à droite, **fermé par défaut** (fermé : ⓘ à part + une pastille regroupant le nom de la pièce et l'icône carte, cliquable pour ouvrir). Ouvert : carte blanche avec bandeau (nom, ⓘ, flèche pour masquer)
   au-dessus de la vraie vue du dessus, découpée à la forme de l'appartement sur fond gris clair, sans bords blancs ; **point bleu + cône de vue** ; clic sur une pièce pour y aller.
 - **Transitions** : la vue tourne vers la porte + léger zoom puis fondu ; aucun écran de chargement (toutes les vues préchargées).
 - **Arrivée dans une pièce** : toujours face à son sujet, jamais devant un mur (angle fixe par pièce, champ `yaw` de chaque scène).

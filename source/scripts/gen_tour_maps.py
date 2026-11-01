@@ -125,12 +125,16 @@ button{font-family:var(--font)}
 .pmap .ic-map{display:none;stroke-width:2;stroke-linejoin:round}
 .pinfo:hover,.pmap:hover{background:#e8eaed}
 .pinfo:active,.pmap:active{transform:scale(.94)}
+.pgroup{display:contents}
 .plabel{order:-1;margin-right:auto;height:32px;padding:0 6px;display:flex;align-items:center;font-size:14px;font-weight:500;color:var(--ink)}
 @media (max-width:600px){.plan{width:min(260px,calc(100vw - 24px))}.pframe{padding:6px}.compass{width:48px;height:48px;padding:2px}}
 .plan.closed{display:flex;align-items:center;gap:8px;width:auto;padding:0;background:none;box-shadow:none;overflow:visible}
 .plan.closed .pframe{display:none}
-.plan.closed .plabel{margin:0;height:40px;padding:0 16px;border-radius:20px;background:#fff;box-shadow:var(--chip-sh)}
-.plan.closed .pinfo,.plan.closed .pmap{width:40px;height:40px;background:#fff;box-shadow:var(--chip-sh)}
+.plan.closed .plabel{margin:0;height:40px;padding:0 2px 0 16px;cursor:pointer}
+.plan.closed .pinfo,.plan.closed .pmap{width:40px;height:40px;background:#fff}
+.plan.closed .pinfo{box-shadow:var(--chip-sh)}
+.plan.closed .pgroup{display:flex;align-items:center;background:#fff;border-radius:20px;box-shadow:var(--chip-sh)}
+.plan.closed .pmap{background:none}
 .plan.closed .pmap .ic-hide{display:none}
 .plan.closed .pmap .ic-map{display:block}
 /* info chip + panel */
@@ -218,8 +222,7 @@ button{font-family:var(--font)}
     <polygon class="pline" points="-74,27 178,27 178,15 933,15 933,695 27,695 27,353 -74,353"/>
   </svg></div>
   <button class="pinfo" id="infoBtn" type="button" aria-label="Informations"><svg viewBox="0 0 24 24"><circle cx="12" cy="5.5" r="2" fill="#0b57d0" stroke="none"/><path d="M12 11v8"/></svg></button>
-  <button class="pmap" id="mapBtn" type="button" aria-label="Afficher la carte" title="Afficher la carte" aria-expanded="false"><svg class="ic-hide" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg><svg class="ic-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg></button>
-  <div class="plabel" id="plabel">Entrée</div>
+  <div class="pgroup"><div class="plabel" id="plabel">Entrée</div><button class="pmap" id="mapBtn" type="button" aria-label="Afficher la carte" title="Afficher la carte" aria-expanded="false"><svg class="ic-hide" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg><svg class="ic-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg></button></div>
 </div>
 
 <div class="scrim" id="scrim"></div>
@@ -284,6 +287,7 @@ function go(k) { if (viewer.getScene() !== k) viewer.loadScene(k); }
 var chips = document.getElementById('chips');
 document.getElementById('infoBtn').onclick = function (e) { e.stopPropagation(); openInfo(); };
 document.getElementById('mapBtn').onclick = function (e) { e.stopPropagation(); var closed = document.getElementById('plan').classList.toggle('closed'), t = closed ? 'Afficher la carte' : 'Masquer la carte'; this.setAttribute('aria-expanded', String(!closed)); this.setAttribute('aria-label', t); this.title = t; layout(); };
+document.getElementById('plabel').onclick = function () { if (document.getElementById('plan').classList.contains('closed')) document.getElementById('mapBtn').click(); };
 var ZONES = ["217,21 923,21 923,277 710,277 710,349 923,349 923,481 516,481 516,392 512,392 512,383 217,383", "37,392 508,392 508,681 37,681", "516,490 826,490 826,681 516,681", "833,490 923,490 923,681 833,681", "-74,26 179,26 179,354 -74,354"];
 var zg = document.getElementById('zones'), NSV = 'http://www.w3.org/2000/svg', svgEl = document.getElementById('plansvg');
 ZONES.forEach(function (pts) {
