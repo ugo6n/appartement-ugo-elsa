@@ -90,9 +90,10 @@ html = r'''<!DOCTYPE html>
 .hs .wrap:active .ic{transform:scale(.92)}
 @keyframes hsIn{from{opacity:0;transform:translate(-50%,-50%) scale(.82)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
 .plan{transform-origin:100% 100%;transition:opacity .22s ease,transform .26s cubic-bezier(.2,.8,.2,1),visibility .22s}
-.rail button{transition:background .15s}
 .rail button svg{transition:transform .15s}
-.rail .pmap:active svg,.rail .ptags:active svg,.rail .pshare:active svg,.rail .pinfo:active svg{transform:scale(.88)}
+.rail .psound .ic-on,.rail .psound[aria-pressed="true"] .ic-off{display:none}
+.rail .psound[aria-pressed="true"] .ic-on{display:block}
+.rail .psound:active svg,.rail .pmap:active svg,.rail .ptags:active svg,.rail .pshare:active svg,.rail .pinfo:active svg{transform:scale(.88)}
 .compass.north .n-state{animation:nIn .22s ease-out}
 @keyframes nIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
 .guide{animation:guideIn .24s ease-out;transition:opacity .15s,background .15s}
@@ -140,11 +141,20 @@ button{font-family:var(--font)}
 .fab.teal{background:#c4eaf0;color:#00363d}
 .fab:active{filter:brightness(.95)}
 
-.rail{position:fixed;right:12px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:9;display:flex;flex-direction:column;width:44px;border-radius:22px;overflow:hidden;background:var(--glass);-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);box-shadow:0 2px 10px rgba(0,0,0,.25)}
-.rail button{position:relative;flex:none;width:44px;height:44px;padding:0;border:0;background:none;display:flex;align-items:center;justify-content:center;cursor:pointer}
-.rail button+button{border-top:1px solid rgba(255,255,255,.14)}
-.rail button:hover{background:rgba(255,255,255,.1)}
-.rail button:active,.rail .pmap[aria-expanded="true"],.rail .ptags[aria-pressed="true"]{background:rgba(255,255,255,.2)}
+.rail{position:fixed;right:12px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:9;display:flex;flex-direction:column;gap:8px;width:44px}
+.rail button{position:relative;flex:none;width:44px;height:44px;padding:0;border:0;border-radius:50%;box-shadow:0 2px 10px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:opacity .2s,transform .24s cubic-bezier(.2,.8,.2,1),visibility .24s,filter .15s}
+.rail .compass{background:#ea4335}.rail .pmap{background:#1a73e8}.rail .ptags{background:#f59e0b}.rail .psound{background:#8b5cf6}.rail .pshare{background:#16a34a}.rail .pinfo{background:#ec4899}
+.rail .pburger{display:none;background:var(--glass);-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%)}
+.pburger .ic-close,.rail.open .pburger .ic-menu{display:none}
+.rail.open .pburger .ic-close{display:block}
+.rail button:hover{filter:brightness(1.08)}
+.rail button:active{filter:brightness(.9)}
+.rail .pmap[aria-expanded="true"],.rail .ptags[aria-pressed="true"],.rail .psound[aria-pressed="true"]{box-shadow:inset 0 0 0 2.5px #fff,0 2px 10px rgba(0,0,0,.25)}
+@media (max-width:600px),(hover:none){
+  .rail .pburger{display:flex}
+  .rail:not(.open) button:not(.pburger){visibility:hidden;opacity:0;transform:translateY(24px) scale(.7);pointer-events:none}
+  .rail.open button:nth-child(5){transition-delay:.03s}.rail.open button:nth-child(4){transition-delay:.06s}.rail.open button:nth-child(3){transition-delay:.09s}.rail.open button:nth-child(2){transition-delay:.12s}.rail.open button:nth-child(1){transition-delay:.15s}
+}
 .rail button svg{display:block;width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .rail .pinfo svg{stroke-width:2.6}
 .rail .compass #dial{width:26px;height:26px}
@@ -251,17 +261,19 @@ button{font-family:var(--font)}
 <div class="rail">
   <button class="compass" id="compass" type="button" aria-label="Boussole : revenir au nord">
   <svg viewBox="0 0 100 100" id="dial">
-    <path d="M50 20 L33 76 L50 66 Z" fill="#ff7a6e" stroke="#ff7a6e" stroke-width="3" stroke-linejoin="round"/><path d="M50 20 L67 76 L50 66 Z" fill="#ea4335" stroke="#ea4335" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M50 20 L33 76 L50 66 Z" fill="#ffffff" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"/><path d="M50 20 L67 76 L50 66 Z" fill="#ffd2cd" stroke="#ffd2cd" stroke-width="3" stroke-linejoin="round"/>
   </svg>
   <svg viewBox="0 0 100 100" class="n-state">
-    <path d="M50 14 L63 40 H37 Z" fill="#ff7a6e" stroke="none"/>
+    <path d="M50 14 L63 40 H37 Z" fill="#fff" stroke="none"/>
     <text x="50" y="64" font-family="Google Sans, Roboto, Arial" font-weight="700" font-size="30" text-anchor="middle" dominant-baseline="central" fill="#fff" stroke="none">N</text>
   </svg>
 </button>
   <button class="pmap" id="mapBtn" type="button" aria-label="Afficher la carte" title="Afficher la carte" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg></button>
   <button class="ptags" id="tagsBtn" type="button" aria-label="Afficher les noms des produits" title="Afficher les noms des produits" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M12 3H4v8l9.3 9.3a1.5 1.5 0 0 0 2.1 0l5.9-5.9a1.5 1.5 0 0 0 0-2.1L12 3z"/><circle cx="8" cy="7.5" r="1.3" fill="#fff" stroke="none"/></svg></button>
+  <button class="psound" id="soundBtn" type="button" aria-label="Activer le son" title="Activer le son" aria-pressed="false"><svg class="ic-off" viewBox="0 0 24 24"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4z"/><path d="m16 9.5 5 5M21 9.5l-5 5"/></svg><svg class="ic-on" viewBox="0 0 24 24"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4z"/><path d="M15.5 9a4.2 4.2 0 0 1 0 6M18 6.5a7.8 7.8 0 0 1 0 11"/></svg></button>
   <button class="pshare" id="shareBtn" type="button" aria-label="Partager cette vue" title="Partager cette vue"><svg viewBox="0 0 24 24"><path d="M12 15V3M7.5 7.5 12 3l4.5 4.5"/><path d="M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/></svg></button>
   <button class="pinfo" id="infoBtn" type="button" aria-label="Informations"><svg viewBox="0 0 24 24"><circle cx="12" cy="5.5" r="2" fill="#fff" stroke="none"/><path d="M12 11v8"/></svg></button>
+  <button class="pburger" id="menuBtn" type="button" aria-label="Ouvrir le menu" title="Ouvrir le menu" aria-expanded="false"><svg class="ic-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg class="ic-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
 </div>
 
 <div class="scrim" id="scrim"></div>
@@ -306,9 +318,9 @@ function icon(k, color) { return '<svg viewBox="0 0 24 24" fill="none" stroke="'
 var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>';
 var busy = false;
 var arriving = false;
-function enterRoom(k) { arriving = true; document.body.classList.add('moving'); viewer.loadScene(k, undefined, undefined, 84); }
+function enterRoom(k) { arriving = true; document.body.classList.add('moving'); playWhoosh(); viewer.loadScene(k, undefined, undefined, 84); }
 function walkTo(ev, a) {
-  if (busy) return; busy = true; document.body.classList.add('moving');
+  if (busy) return; busy = true; document.body.classList.add('moving'); playClick();
   viewer.lookAt(Math.max(a.pitch * 0.4, -6), a.yaw, 62, 650, function () {
     enterRoom(a.k);
     setTimeout(function () { busy = false; }, 1100);
@@ -389,6 +401,41 @@ function updateGuide() {
 }
 document.getElementById('tagsBtn').onclick = function () { var off = document.body.classList.toggle('no-tags'), t = off ? 'Afficher les noms des produits' : 'Masquer les noms des produits'; this.setAttribute('aria-pressed', String(!off)); this.setAttribute('aria-label', t); this.title = t; };
 viewer.on('load', function () { document.body.classList.remove('moving'); if (arriving) { arriving = false; viewer.setHfov(100, 1100); } });
+// sound design: generated in the page, off until the visitor turns it on
+var audioCtx = null, soundOn = false;
+function playClick() {
+  if (!soundOn || !audioCtx) return;
+  var t = audioCtx.currentTime, o = audioCtx.createOscillator(), g = audioCtx.createGain();
+  o.type = 'sine'; o.frequency.setValueAtTime(880, t); o.frequency.exponentialRampToValueAtTime(520, t + .05);
+  g.gain.setValueAtTime(.045, t); g.gain.exponentialRampToValueAtTime(.0001, t + .07);
+  o.connect(g); g.connect(audioCtx.destination); o.start(t); o.stop(t + .08);
+}
+function playWhoosh() {
+  if (!soundOn || !audioCtx) return;
+  var t = audioCtx.currentTime, n = Math.floor(audioCtx.sampleRate * .8), b = audioCtx.createBuffer(1, n, audioCtx.sampleRate), d = b.getChannelData(0), i;
+  for (i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
+  var s = audioCtx.createBufferSource(), f = audioCtx.createBiquadFilter(), g = audioCtx.createGain();
+  s.buffer = b; f.type = 'bandpass'; f.Q.value = .8;
+  f.frequency.setValueAtTime(300, t); f.frequency.exponentialRampToValueAtTime(900, t + .35); f.frequency.exponentialRampToValueAtTime(300, t + .8);
+  g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.05, t + .3); g.gain.exponentialRampToValueAtTime(.0001, t + .8);
+  s.connect(f); f.connect(g); g.connect(audioCtx.destination); s.start(t); s.stop(t + .8);
+}
+var railEl = document.querySelector('.rail'), menuBtn = document.getElementById('menuBtn');
+function setMenu(open) { railEl.classList.toggle('open', open); var t = open ? 'Fermer le menu' : 'Ouvrir le menu'; menuBtn.setAttribute('aria-expanded', String(open)); menuBtn.setAttribute('aria-label', t); menuBtn.title = t; }
+menuBtn.onclick = function () { setMenu(!railEl.classList.contains('open')); };
+document.getElementById('pano').addEventListener('pointerdown', function () { setMenu(false); }, true);
+document.getElementById('infoBtn').addEventListener('click', function () { setMenu(false); });
+document.querySelector('.rail').addEventListener('click', playClick, true);
+document.getElementById('soundBtn').onclick = function () {
+  soundOn = !soundOn;
+  var t = soundOn ? 'Couper le son' : 'Activer le son';
+  this.setAttribute('aria-pressed', String(soundOn)); this.setAttribute('aria-label', t); this.title = t;
+  if (soundOn) {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    audioCtx.resume();
+    playClick();
+  }
+};
 function makeTag(div, a) { var t = document.createElement('div'); t.className = 'tag'; t.textContent = a.label; div.appendChild(t); a.el = t; }
 viewer.on('load', function addProducts() {
   viewer.off('load', addProducts);
