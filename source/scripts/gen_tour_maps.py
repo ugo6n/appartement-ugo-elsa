@@ -87,7 +87,7 @@ html = r'''<!DOCTYPE html>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%;background:#e8e2d6;font-family:var(--font);color:var(--ink);overflow:hidden;-webkit-font-smoothing:antialiased}
 #pano{position:absolute;top:0;left:0;width:100%;height:100vh;height:100lvh}
-@media (hover:none){#pano{top:-70px;height:calc(100% + 140px)}}
+@media (hover:none){html,body{overflow:visible;overscroll-behavior:none;touch-action:none}#pano{top:-70px;height:calc(100% + 140px)}.info{touch-action:pan-y}}
 .pnlm-panorama-info,.pnlm-about-msg{display:none!important}
 .pnlm-load-box{display:none!important;background:#fff!important;color:var(--ink)!important;border-radius:16px;box-shadow:var(--sh);font-family:var(--font)!important}
 .pnlm-load-box p{display:none}.pnlm-lbar{border-color:#dadce0!important}.pnlm-lbar-fill{background:var(--blue)!important}
@@ -270,7 +270,7 @@ button{font-family:var(--font)}
     <li><svg viewBox="0 0 24 24"><path d="M6 21V3h12v18M10 7h4M10 11h4M10 15h4"/></svg><div><span>Étage</span><b>3e étage avec ascenseur</b></div></li>
     <li><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><div><span>Construction</span><b>2026 · neuf</b></div></li>
     <li><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg><div><span>Chauffage</span><b>Électrique · radiateurs</b></div></li>
-    <li><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M9 17V7h4a3 3 0 0 1 0 6H9"/></svg><div><span>Stationnement</span><b>Place de parking n° 46</b></div></li>
+    <li><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M9 17V7h4a3 3 0 0 1 0 6H9"/></svg><div><span>Stationnement</span><b>Place de parking</b></div></li>
     <li><svg viewBox="0 0 24 24"><circle cx="6" cy="16" r="3.5"/><circle cx="18" cy="16" r="3.5"/><path d="M6 16l4-7h5l3 7M9 9h3"/></svg><div><span>Vélos</span><b>Local / box à vélos</b></div></li>
   </ul>
 </aside>
@@ -405,6 +405,7 @@ var var_h0 = 0;
 var viewDone = false;
 if (hasView) viewer.on('load', function () { if (viewDone) return; viewDone = true; viewer.setYaw(hv[0], 0); viewer.setPitch(hv[1], 0); });
 window.addEventListener('hashchange', function () { var h = location.hash.slice(1).split('@')[0]; if (NAMES[h]) go(h); });
+window.addEventListener('scroll', function () { if (window.scrollY) window.scrollTo(0, 0); });
 var toast = document.getElementById('toast');
 function hideToast() { toast.style.opacity = 0; }
 function linkCopied() { toast.firstChild.style.display = 'none'; toast.lastChild.textContent = 'Lien copié'; toast.style.padding = '0 14px'; toast.style.opacity = 1; setTimeout(hideToast, 2000); }

@@ -62,12 +62,13 @@ Dans Blender : X = x/100, Y = −y/100, Z = z/100 (mètres).
 
 ## Fiche infos (bouton ⓘ)
 Appartement T2 · **18 rue des Folies, 35700 Rennes** · 48,4 m² habitables · balcon 7,3 m² exposé ouest (soleil du soir) ·
-3e étage avec ascenseur · construction 2026 (neuf) · chauffage électrique, radiateurs (Ugo a aussi dit « collectif » — à confirmer) ·
-**DPE B** (GES inconnu) · place de parking n° 46 · local / box à vélos · location (le statut n'est volontairement pas affiché).
+3e étage avec ascenseur · construction 2026 (neuf) · chauffage électrique, radiateurs (confirmé ; c'est l'eau qui est partagée) ·
+**DPE B** (GES inconnu) · place de parking (numéro volontairement retiré) · local / box à vélos · location (affiché dans le sous-titre, conservé par Ugo).
 Bouton « Ouvrir sur Google Maps » (une carte intégrée n'était pas possible sur l'ancien hébergement ; sur GitHub Pages
 un iframe Google Maps / OpenStreetMap est maintenant faisable).
 
 ## Prochaine étape prévue
+Ugo refera la 3D plus tard (immeubles et arbres vus par les fenêtres trop simplifiés). Bandes de Safari sur iPhone : à confirmer après le dernier essai.
 **Améliorer l'UX/UI du site** selon les retours d'Ugo (il donnera les consignes au fur et à mesure, souvent avec des captures d'écran iPhone).
 Tester d'abord sur mobile (iPhone, viewport ~390×844), puis sur ordinateur.
 Ugo veut que les changements demandés soient publiés directement, sans lui faire déposer de fichiers.
