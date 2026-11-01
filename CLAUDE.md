@@ -43,7 +43,7 @@ Dans Blender : X = x/100, Y = −y/100, Z = z/100 (mètres).
 
 ## Interface actuelle (préférences d'Ugo — à respecter)
 - DA : coins arrondis, ombres douces, police Google Sans / Roboto. **Tout ce qui flotte sur la vue** (barre, étiquettes, ronds de passage, messages) est en **verre sombre semi-transparent** à texte blanc ; la fiche infos reste blanche pour la lecture.
-- **Barre de commandes** verticale en bas à droite : boussole, carte, étiquette (afficher ou masquer les noms des produits, activés par défaut), ⓘ. Nom de la pièce = petite étiquette à part, en bas à gauche.
+- **Barre de commandes** verticale en bas à droite : boussole, carte, étiquette (afficher ou masquer les noms des produits, activés par défaut), ⓘ. Pas d'étiquette avec le nom de la pièce (retirée à la demande d'Ugo : on sait où on a cliqué).
 - Interface **minimale** : pas de titre, pas de barre de boutons en haut, pas de système de note (refusé).
 - Passages entre pièces : **petit rond sombre + flèche blanche + nom en petit**. Pas plus grands au repos (léger grossissement au survol de la souris seulement), pas d'animation qui clignote.
 - **Aide aux passages** : si aucun rond n'est dans le champ, une pastille en bas au centre (« ‹ Entrée ») tourne la vue vers le plus proche.

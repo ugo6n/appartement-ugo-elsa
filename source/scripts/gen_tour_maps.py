@@ -142,8 +142,6 @@ button{font-family:var(--font)}
 .guide svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .guide.right svg{transform:rotate(180deg)}
 .guide:active{background:rgba(32,33,36,.82)}
-.plabel{position:fixed;left:12px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:9;height:36px;padding:0 14px;border-radius:18px;display:flex;align-items:center;font-size:13px;font-weight:500;color:#fff;background:var(--glass);-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);box-shadow:0 2px 10px rgba(0,0,0,.25)}
-.plan:not(.closed)~.plabel{left:auto;right:64px;bottom:calc(24px + var(--planh) + env(safe-area-inset-bottom))}
 @media (max-width:600px){.plan{width:min(260px,calc(100vw - 88px))}.pframe{padding:6px}}
 .plan.closed{display:none}
 /* info chip + panel */
@@ -222,7 +220,6 @@ button{font-family:var(--font)}
   </svg></div>
 </div>
 <button class="guide" id="guide" type="button" hidden aria-label="Tourner vers le passage le plus proche"><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg><span id="guideLabel"></span></button>
-<div class="plabel" id="plabel">Entrée</div>
 <div class="rail">
   <button class="compass" id="compass" type="button" aria-label="Boussole : revenir au nord">
   <svg viewBox="0 0 100 100" id="dial">
@@ -318,7 +315,6 @@ window.addEventListener('resize', layout);
 function mark() {
   var k = viewer.getScene();
   var p = XY[k]; ['me','meRing'].forEach(function(id){ var c=document.getElementById(id); c.setAttribute('cx', p[0]); c.setAttribute('cy', p[1]); });
-  document.getElementById('plabel').textContent = NAMES[k];
   document.getElementById('coneg').setAttribute('gradientTransform', 'translate(' + p[0] + ',' + p[1] + ') scale(170)');
   try { if (location.hash !== '#' + k) history.replaceState(null, '', '#' + k); } catch (e) {}
   setTimeout(layout, 30);
