@@ -77,6 +77,7 @@ html = r'''<!DOCTYPE html>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%;background:#e8e2d6;font-family:var(--font);color:var(--ink);overflow:hidden;-webkit-font-smoothing:antialiased}
 #pano{position:absolute;top:0;left:0;width:100%;height:100vh;height:100lvh}
+@media (hover:none){#pano{top:-70px;height:calc(100% + 140px)}}
 .pnlm-panorama-info,.pnlm-about-msg{display:none!important}
 .pnlm-load-box{display:none!important;background:#fff!important;color:var(--ink)!important;border-radius:16px;box-shadow:var(--sh);font-family:var(--font)!important}
 .pnlm-load-box p{display:none}.pnlm-lbar{border-color:#dadce0!important}.pnlm-lbar-fill{background:var(--blue)!important}
